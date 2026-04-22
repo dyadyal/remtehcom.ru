@@ -1182,13 +1182,28 @@ body {
 }
 
 .nav-contacts {
+  align-items: center;
   gap: 12px;
 }
 
-.nav-phone {
-  color: var(--rt-ink);
-  font-weight: 800;
-  white-space: nowrap;
+.nav-phone-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(218, 43, 60, 0.1);
+  color: var(--rt-red);
+  font-size: 18px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-phone-icon:hover,
+.nav-phone-icon:focus {
+  background: var(--rt-red);
+  color: #fff;
+  transform: translateY(-1px);
 }
 
 .hero-section {
