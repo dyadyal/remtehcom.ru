@@ -1710,6 +1710,14 @@ function build() {
     writeRaw(file, legacyRedirect(file));
   });
 
+  services.forEach((service) => {
+    writeRaw(`${service.slug}/index.html`, legacyRedirect(serviceFile(service)));
+  });
+
+  articles.forEach((article) => {
+    writeRaw(`${article.slug}/index.html`, legacyRedirect(articleFile(article)));
+  });
+
   writeRaw("article/index.html", legacyRedirect("article.html"));
   articles.forEach((article) => {
     writeRaw(`article/${article.slug}/index.html`, legacyRedirect(articleFile(article)));
