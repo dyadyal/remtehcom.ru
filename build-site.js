@@ -12,6 +12,7 @@ const {
 
 const outDir = __dirname;
 const serviceFile = (service) => `${service.slug}.html`;
+const articleFile = (article) => `${article.slug}.html`;
 const assetImage = "images/banner.jpg";
 const defaultKeywords = [
   "ремонт бытовой техники в Туле",
@@ -29,6 +30,7 @@ const defaultKeywords = [
 const navItems = [
   ["index.html", "Главная"],
   ["services.html", "Услуги"],
+  ["articles.html", "Статьи"],
   ["prices.html", "Цены"],
   ["about.html", "О компании"],
   ["reviews.html", "Отзывы"],
@@ -160,6 +162,29 @@ function serviceSchema(service) {
       availability: "https://schema.org/InStock",
       url: canonicalUrl(serviceFile(service))
     }
+  };
+}
+
+function articleSchema(article) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.h1,
+    description: article.description,
+    image: absoluteImageUrl(article.image),
+    author: {
+      "@type": "Organization",
+      name: company.legalName
+    },
+    publisher: {
+      "@type": "Organization",
+      name: company.legalName,
+      logo: {
+        "@type": "ImageObject",
+        url: `${company.baseUrl}/images/logo.png`
+      }
+    },
+    mainEntityOfPage: canonicalUrl(articleFile(article))
   };
 }
 
@@ -375,6 +400,190 @@ function serviceCards(list = services) {
     .join("\n")}
 </div>`;
 }
+
+const articleTopics = [
+  {
+    key: "ne-vklyuchaetsya",
+    suffix: "техника не включается",
+    angle: "прибор не реагирует на кнопку питания, отключается через несколько секунд или выбивает автомат",
+    focus: "питание, кабель, розетку, защитные цепи и электронный модуль"
+  },
+  {
+    key: "oshibka",
+    suffix: "появляется ошибка",
+    angle: "на дисплее появляется код, программа останавливается или техника не запускает рабочий цикл",
+    focus: "датчики, плату управления, соединения, питание и условия эксплуатации"
+  },
+  {
+    key: "shumit",
+    suffix: "появился шум",
+    angle: "появились гул, скрежет, вибрация, щелчки или непривычные звуки во время работы",
+    focus: "крепления, двигатель, вентилятор, насосы, подшипники и механические узлы"
+  },
+  {
+    key: "techet",
+    suffix: "появилась протечка",
+    angle: "под техникой появилась вода, влага собирается внутри корпуса или срабатывает защита от протечки",
+    focus: "шланги, уплотнители, дренаж, насосы, соединения и герметичность корпуса"
+  },
+  {
+    key: "diagnostika",
+    suffix: "диагностика",
+    angle: "нужно понять причину поломки до покупки запчастей и согласования ремонта",
+    focus: "осмотр, тестирование узлов, оценку стоимости, сроков и целесообразности ремонта"
+  },
+  {
+    key: "stoimost",
+    suffix: "стоимость ремонта",
+    angle: "цена зависит от модели, доступа к узлам, состояния техники и необходимости замены деталей",
+    focus: "тип неисправности, сложность разборки, цену комплектующих и объем работ"
+  },
+  {
+    key: "srochno",
+    suffix: "срочный ремонт",
+    angle: "техника нужна каждый день, а поломка мешает быту, работе кухни или нормальному хранению продуктов",
+    focus: "приоритетные симптомы, порядок заявки, подготовку к приезду мастера и согласование ремонта"
+  },
+  {
+    key: "garantiya",
+    suffix: "ремонт с гарантией",
+    angle: "важно понимать, какие работы выполняются, какие детали ставятся и как фиксируется гарантия",
+    focus: "диагностику, согласование сметы, проверку после ремонта и рекомендации по эксплуатации"
+  }
+];
+
+const generalArticleIdeas = [
+  {
+    slug: "remont-bytovoy-tehniki-tula-kak-vybrat-mastera",
+    h1: "Как выбрать мастера по ремонту бытовой техники в Туле",
+    title: "Как выбрать мастера по ремонту бытовой техники в Туле | Remtehcom",
+    description: "Практичная статья о выборе мастера по ремонту бытовой техники в Туле: диагностика, гарантия, цены, выезд, признаки надежного сервиса.",
+    keywords: ["мастер по ремонту бытовой техники Тула", "ремонт бытовой техники в Туле", "вызов мастера Тула", "сервисный центр Тула", "ремонт техники с гарантией"],
+    lead: "Надежный мастер не обещает точную цену без диагностики, объясняет причину поломки и согласует ремонт до начала работ.",
+    sections: [
+      ["На что смотреть при выборе", "Для ремонта бытовой техники в Туле важны понятная диагностика, аккуратный выезд, опыт с разными брендами и готовность объяснить клиенту, какие работы действительно нужны."],
+      ["Почему цена до диагностики только ориентировочная", "Одна и та же внешняя поломка может быть вызвана разными узлами. Поэтому корректно сначала проверить технику, а затем назвать стоимость ремонта и список деталей."],
+      ["Какие вопросы задать мастеру", "Уточните, работает ли специалист с вашей техникой, есть ли гарантия, как согласуется цена, что входит в диагностику и возможен ли ремонт на месте."],
+      ["Когда стоит обратиться в Remtehcom", "Если нужна диагностика холодильника, стиральной машины, посудомойки, телевизора, микроволновки, кондиционера или другой техники в Туле, оставьте заявку или позвоните мастеру."]
+    ]
+  },
+  {
+    slug: "srochnyy-remont-bytovoy-tehniki-v-tule",
+    h1: "Срочный ремонт бытовой техники в Туле: когда нельзя откладывать",
+    title: "Срочный ремонт бытовой техники в Туле | Когда вызывать мастера",
+    description: "Когда нужен срочный ремонт бытовой техники в Туле: протечка, запах гари, отключение автомата, остановка холодильника, ошибки и шум.",
+    keywords: ["срочный ремонт бытовой техники Тула", "вызов мастера Тула", "ремонт техники срочно", "ремонт холодильника срочно", "ремонт стиральной машины срочно"],
+    lead: "Некоторые неисправности лучше не проверять повторными включениями: так можно увеличить стоимость ремонта или повредить соседние узлы.",
+    sections: [
+      ["Опасные симптомы", "Запах гари, искрение, выбивание автомата, протечка, сильная вибрация и перегрев корпуса требуют остановки техники и диагностики."],
+      ["Что можно сделать до приезда мастера", "Отключите питание, перекройте воду при протечке, не разбирайте корпус без опыта и подготовьте модель техники, чтобы мастер быстрее оценил ситуацию."],
+      ["Какие заявки считаются приоритетными", "Чаще всего срочно обращаются по холодильникам, стиральным машинам, посудомойкам, электроплитам и кондиционерам в сезон жары."],
+      ["Как работает Remtehcom", "Мы уточняем район Тулы, тип техники, симптомы и удобное время. Стоимость ремонта согласуется после диагностики."]
+    ]
+  },
+  {
+    slug: "diagnostika-bytovoy-tehniki-v-tule",
+    h1: "Диагностика бытовой техники в Туле перед ремонтом",
+    title: "Диагностика бытовой техники в Туле | Remtehcom",
+    description: "Зачем нужна диагностика бытовой техники перед ремонтом в Туле: как мастер определяет причину поломки, цену и целесообразность работ.",
+    keywords: ["диагностика бытовой техники Тула", "ремонт техники диагностика", "вызов мастера на диагностику", "ремонт бытовой техники Тула"],
+    lead: "Диагностика помогает не менять детали наугад и заранее понять, сколько будет стоить ремонт.",
+    sections: [
+      ["Что проверяет мастер", "Питание, управляющие узлы, механические детали, нагрев, охлаждение, слив, датчики и соединения проверяются в зависимости от вида техники."],
+      ["Почему нельзя назвать точную цену по телефону", "По описанию можно дать ориентир, но окончательная стоимость зависит от конкретной причины неисправности и состояния техники."],
+      ["Что получает клиент", "После проверки мастер объясняет причину поломки, варианты ремонта, ориентировочный срок и гарантийные условия."],
+      ["Когда диагностика особенно важна", "После скачка напряжения, протечки, перегрева, ошибки на дисплее или повторяющейся поломки диагностика обязательна."]
+    ]
+  },
+  {
+    slug: "remont-tehniki-v-tulskoy-oblasti",
+    h1: "Ремонт бытовой техники в Туле и Тульской области",
+    title: "Ремонт бытовой техники в Туле и Тульской области | Remtehcom",
+    description: "Как организовать ремонт бытовой техники в Туле и Тульской области: выезд мастера, диагностика, цены, гарантия, популярные услуги.",
+    keywords: ["ремонт бытовой техники Тульская область", "ремонт техники в Туле", "мастер по ремонту техники Тульская область", "выезд мастера Тула"],
+    lead: "Для жителей Тулы и области удобнее заранее описать поломку, модель техники и адрес, чтобы согласовать время диагностики.",
+    sections: [
+      ["Какая техника ремонтируется", "Remtehcom работает с холодильниками, стиральными и посудомоечными машинами, телевизорами, микроволновками, кондиционерами, плитами, духовками, варочными панелями, кофемашинами и пылесосами."],
+      ["Как согласуется выезд", "При заявке уточняются адрес, симптомы, срочность и тип техники. По Тульской области условия выезда обсуждаются индивидуально."],
+      ["Как формируется цена", "На стоимость влияет вид поломки, доступ к узлам, цена запчастей и объем работ. Точная сумма называется после диагностики."],
+      ["Почему важна гарантия", "Гарантия подтверждает, что работы выполнены согласованно, а установленная деталь и ремонт проверены после сборки."]
+    ]
+  }
+];
+
+function articleIntro(service, topic) {
+  return `${service.name} в Туле: ${topic.suffix}. Разбираем типовые причины, порядок диагностики, ориентиры по стоимости и ситуации, когда лучше сразу вызвать мастера Remtehcom.`;
+}
+
+function articleKeywords(service, topic) {
+  return [
+    `${service.name.toLowerCase()} в Туле`,
+    `${service.name.toLowerCase()} ${topic.suffix}`,
+    `${service.name.toLowerCase()} Тула`,
+    `мастер ${service.short.toLowerCase()} Тула`,
+    "ремонт бытовой техники в Туле",
+    "вызов мастера Тула",
+    "ремонт техники Тульская область"
+  ];
+}
+
+function articleSections(service, topic) {
+  const firstFaults = service.faults.slice(0, 3).join(", ");
+  const prices = service.priceRows.slice(0, 3).map(([name, price]) => `${name.toLowerCase()} - ${price}`).join("; ");
+  return [
+    [
+      "Когда стоит обратить внимание на проблему",
+      `Для услуги «${service.name}» частая ситуация выглядит так: ${topic.angle}. Иногда техника продолжает работать, но нагрузка на узлы растет, поэтому откладывать диагностику надолго не стоит. В Туле такие обращения часто начинаются с поиска «ремонт рядом» или «вызов мастера», когда техника нужна каждый день.`
+    ],
+    [
+      "Что проверяет мастер",
+      `Специалист Remtehcom оценивает ${topic.focus}. Для точной диагностики важны модель, возраст техники, условия эксплуатации и симптомы. По телефону можно назвать ориентир, но окончательное решение принимается после проверки на месте.`
+    ],
+    [
+      "Типовые признаки неисправности",
+      `Клиенты чаще всего описывают такие признаки: ${firstFaults}. Если симптомы повторяются после перезапуска или отключения от сети, лучше не экспериментировать, а согласовать диагностику. Это снижает риск дорогого ремонта и помогает быстрее вернуть технику в работу.`
+    ],
+    [
+      "Сколько может стоить ремонт",
+      `Цены зависят от модели, доступа к узлам и необходимости деталей. Для ориентира по этой услуге: ${prices}. Точная стоимость называется до начала ремонта после диагностики, чтобы клиент понимал итоговую сумму и мог принять решение.`
+    ],
+    [
+      "Как подготовиться к приезду мастера",
+      `Освободите доступ к технике, подготовьте документы или название модели, вспомните, когда появилась неисправность и что происходило перед поломкой. Если есть протечка, запах гари или выбивает автомат, технику лучше отключить до диагностики.`
+    ],
+    [
+      "Почему удобно обратиться в Remtehcom",
+      `Мы работаем по Туле и согласовываем выезд по Тульской области, объясняем причину поломки простым языком и приступаем к ремонту только после согласования цены. На выполненные работы и установленные детали предоставляется гарантия.`
+    ]
+  ];
+}
+
+function buildArticles() {
+  const serviceArticles = services.flatMap((service) =>
+    articleTopics.map((topic) => ({
+      slug: `${service.slug}-${topic.key}`,
+      title: `${service.name} в Туле: ${topic.suffix} | Remtehcom`,
+      description: `${service.name} в Туле: ${topic.suffix}. Причины, диагностика, стоимость, вызов мастера Remtehcom и ремонт с гарантией.`,
+      keywords: articleKeywords(service, topic),
+      h1: `${service.name} в Туле: ${topic.suffix}`,
+      lead: articleIntro(service, topic),
+      image: service.image || assetImage,
+      service,
+      sections: articleSections(service, topic)
+    }))
+  );
+
+  return [
+    ...serviceArticles,
+    ...generalArticleIdeas.map((article) => ({
+      ...article,
+      image: assetImage,
+      service: services[0]
+    }))
+  ];
+}
+
+const articles = buildArticles();
 
 function benefitsBlock(title = "Почему выбирают Remtehcom") {
   return `
@@ -690,6 +899,124 @@ function relatedServices(current) {
     .slice(0, 5);
 }
 
+function articleCards(list = articles) {
+  return `
+<div class="columns is-multiline article-grid">
+  ${list
+    .map(
+      (article) => `
+  <div class="column is-4-widescreen is-4-desktop is-6-tablet">
+    <article class="card article-card match-height">
+      <figure class="service-card-image">
+        <img src="${attr(article.image)}" alt="${attr(article.h1)}" loading="lazy">
+      </figure>
+      <div class="card-body">
+        <span class="article-tag">${escapeHtml(article.service.short)}</span>
+        <h3 class="card-title h4">${escapeHtml(article.h1)}</h3>
+        <p class="card-text">${escapeHtml(article.lead)}</p>
+        <a href="${articleFile(article)}" class="card-link">Читать статью</a>
+      </div>
+    </article>
+  </div>`
+    )
+    .join("\n")}
+</div>`;
+}
+
+function renderArticles() {
+  const body = `
+${hero({
+  h1: "Статьи о ремонте бытовой техники в Туле",
+  lead: "Полезный раздел Remtehcom: 100 SEO-статей о ремонте холодильников, стиральных машин, посудомоек, телевизоров, кондиционеров и другой техники.",
+  kicker: "Полезные статьи",
+  compact: true,
+  imageAlt: "Статьи о ремонте бытовой техники в Туле"
+})}
+<section class="section">
+  <div class="container">
+    ${sectionHeader("Все статьи", "Материалы помогают понять симптомы неисправностей, ориентиры стоимости, диагностику и порядок вызова мастера в Туле.")}
+    ${articleCards()}
+  </div>
+</section>
+${contactCta("Нужна консультация по ремонту техники?")}`;
+
+  return layout({
+    file: "articles.html",
+    activeFile: "articles.html",
+    title: "Статьи о ремонте бытовой техники в Туле | Remtehcom",
+    description: "100 полезных статей Remtehcom о ремонте бытовой техники в Туле: холодильники, стиральные машины, телевизоры, кондиционеры, цены и диагностика.",
+    keywords: ["статьи ремонт бытовой техники Тула", "ремонт техники советы", "ремонт холодильников статьи", "ремонт стиральных машин статьи", "мастер по ремонту техники Тула"],
+    breadcrumbs: [
+      { name: "Главная", file: "index.html" },
+      { name: "Статьи", file: "articles.html" }
+    ],
+    body
+  });
+}
+
+function renderArticle(article) {
+  const related = relatedServices(article.service).slice(0, 4);
+  const nearby = articles
+    .filter((item) => item.slug !== article.slug && item.service.slug === article.service.slug)
+    .slice(0, 4);
+  const body = `
+${hero({
+  h1: article.h1,
+  lead: article.lead,
+  kicker: "Советы мастера Remtehcom",
+  compact: true,
+  image: article.image,
+  imageAlt: article.h1
+})}
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline">
+      <article class="column is-8-desktop content commercial-content article-content">
+        ${article.sections.map(([title, text]) => `<h2>${escapeHtml(title)}</h2>\n<p>${escapeHtml(text)}</p>`).join("\n")}
+        <h2>Куда перейти дальше</h2>
+        <p>Если проблема похожа на вашу, откройте страницу услуги «<a href="${serviceFile(article.service)}">${escapeHtml(article.service.name)}</a>» или оставьте заявку на диагностику в Туле. Также полезно посмотреть ориентировочные цены и FAQ по ремонту.</p>
+      </article>
+      <aside class="column is-4-desktop">
+        <div class="side-panel">
+          <h2 class="h4">Услуга по теме</h2>
+          <p>${escapeHtml(article.service.lead)}</p>
+          <a href="${serviceFile(article.service)}" class="btn btn-primary">${escapeHtml(article.service.name)}</a>
+        </div>
+        <div class="side-panel">
+          <h2 class="h4">Еще по этой теме</h2>
+          <ul class="side-links">
+            ${nearby.map((item) => `<li><a href="${articleFile(item)}">${escapeHtml(item.h1)}</a></li>`).join("\n")}
+          </ul>
+        </div>
+        <div class="side-panel">
+          <h2 class="h4">Смежные услуги</h2>
+          <ul class="side-links">
+            ${related.map((service) => `<li><a href="${serviceFile(service)}">${escapeHtml(service.name)}</a></li>`).join("\n")}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+${contactCta(`Заказать ${article.service.name.toLowerCase()} в Туле`)}`;
+
+  return layout({
+    file: articleFile(article),
+    activeFile: "articles.html",
+    title: article.title,
+    description: article.description,
+    keywords: article.keywords,
+    image: article.image,
+    breadcrumbs: [
+      { name: "Главная", file: "index.html" },
+      { name: "Статьи", file: "articles.html" },
+      { name: article.h1, file: articleFile(article) }
+    ],
+    schemas: [articleSchema(article)],
+    body
+  });
+}
+
 function renderService(service) {
   const related = relatedServices(service);
   const body = `
@@ -967,12 +1294,14 @@ function sitemap() {
     "index.html",
     "about.html",
     "services.html",
+    "articles.html",
     "prices.html",
     "reviews.html",
     "faq.html",
     "contact.html",
     "privacy.html",
-    ...services.map(serviceFile)
+    ...services.map(serviceFile),
+    ...articles.map(articleFile)
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -1015,6 +1344,7 @@ function build() {
   write("index.html", renderHome());
   write("about.html", renderAbout());
   write("services.html", renderServices());
+  write("articles.html", renderArticles());
   write("prices.html", renderPrices());
   write("reviews.html", renderReviews());
   write("faq.html", renderFaqPage());
@@ -1026,10 +1356,14 @@ function build() {
     write(serviceFile(service), renderService(service));
   });
 
+  articles.forEach((article) => {
+    write(articleFile(article), renderArticle(article));
+  });
+
   write("sitemap.xml", sitemap());
   write("robots.txt", robots());
   write(".htaccess", htaccess());
 }
 
 build();
-console.log(`Generated ${services.length + 9} pages for ${company.name}`);
+console.log(`Generated ${services.length + articles.length + 10} pages for ${company.name}`);

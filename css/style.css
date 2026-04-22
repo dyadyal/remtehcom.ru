@@ -1371,6 +1371,7 @@ body {
 }
 
 .service-card,
+.article-card,
 .feature-tile,
 .review-card,
 .price-card,
@@ -1385,6 +1386,20 @@ body {
 .service-card {
   height: 100%;
   overflow: hidden;
+}
+
+.article-card {
+  height: 100%;
+  overflow: hidden;
+}
+
+.article-tag {
+  display: inline-flex;
+  margin-bottom: 10px;
+  color: var(--rt-red);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .service-card-image {

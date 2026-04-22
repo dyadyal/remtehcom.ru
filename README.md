@@ -7,6 +7,7 @@
 - `site-data.js` - основной редактируемый контент: контакты, услуги, цены, FAQ, отзывы, `title`, `description`, `keywords`, изображения.
 - `build-site.js` - генератор HTML-страниц, Schema.org, Open Graph, sitemap, robots и `.htaccess`.
 - `index.html`, `services.html`, `prices.html`, `contact.html` и страницы услуг - сгенерированные страницы в корне проекта.
+- `articles.html` и страницы статей `*.html` - SEO-раздел со 100 статьями для продвижения услуг в Туле.
 - `images/banner.jpg` - общий hero-баннер для главной и служебных страниц.
 - `images/services/*.jpg` - уникальные изображения для SEO-страниц услуг.
 - `css/style.css` - стили сайта поверх готовой Bulma/Themefisher-верстки.
@@ -40,6 +41,15 @@ node build-site.js
 - FAQPage schema;
 - `meta description` и `meta keywords`;
 - alt-тексты изображений.
+
+## Статьи
+
+Раздел статей генерируется в `build-site.js` из списка услуг и тематических SEO-шаблонов:
+
+- 12 направлений услуг умножаются на 8 поисковых тем;
+- добавляются 4 общие статьи по ремонту техники, диагностике, срочному ремонту и выбору мастера;
+- итог: `articles.html` и 100 детальных страниц статей;
+- каждая статья получает `title`, `description`, `keywords`, `h1`, Open Graph, Article schema и перелинковку на услугу.
 
 ## Изображения
 
