@@ -821,7 +821,7 @@ function renderContactPage() {
   const body = `
 ${hero({
   h1: "Контакты Remtehcom в Туле",
-  lead: "Позвоните, напишите или оставьте заявку на ремонт бытовой техники. Адрес сервисного центра: ${company.address}.",
+  lead: `Позвоните, напишите или оставьте заявку на ремонт бытовой техники. Адрес сервисного центра: ${company.address}.`,
   kicker: "Контакты",
   compact: true,
   imageAlt: "Контакты Remtehcom в Туле"
