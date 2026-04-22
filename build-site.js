@@ -329,8 +329,8 @@ function header(activeFile) {
       </div>
       <div class="navbar-end ml-0">
         <div class="navbar-item py-0 nav-contacts">
-          <a href="${phoneHref(company.phone)}" class="nav-phone-icon" aria-label="Позвонить в Remtehcom">
-            <i class="ti-headphone-alt" aria-hidden="true"></i>
+          <a href="${phoneHref(company.phone)}" class="btn btn-sm btn-primary nav-phone-icon" aria-label="Позвонить в Remtehcom">
+            <i class="ti-mobile" aria-hidden="true"></i>
           </a>
           <a href="${pageHref("contact.html#request")}" class="btn btn-sm btn-primary ml-4">Вызвать мастера</a>
         </div>
