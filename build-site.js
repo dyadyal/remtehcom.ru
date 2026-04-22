@@ -85,11 +85,44 @@ function phoneHref(value) {
   return `tel:${value.replace(/[^\d+]/g, "")}`;
 }
 
-function canonicalUrl(file) {
+function routePath(file) {
   if (file === "index.html") {
-    return `${company.baseUrl}/`;
+    return "/";
   }
-  return `${company.baseUrl}/${file.replace(/\.html$/, "")}`;
+  if (file === "404.html") {
+    return "/404.html";
+  }
+  if (file.endsWith(".html")) {
+    return `/${file.replace(/\.html$/, "")}/`;
+  }
+  return `/${file.replace(/^\/+/, "")}`;
+}
+
+function canonicalUrl(file) {
+  return `${company.baseUrl}${routePath(file)}`;
+}
+
+function pageHref(value) {
+  if (!value || /^(https?:|mailto:|tel:|#)/i.test(value)) {
+    return value;
+  }
+  const [file, hash] = value.split("#");
+  const href = routePath(file);
+  return hash ? `${href}#${hash}` : href;
+}
+
+function sitePath(value) {
+  if (!value || /^(https?:|mailto:|tel:|#)/i.test(value)) {
+    return value;
+  }
+  return `/${value.replace(/^\/+/, "")}`;
+}
+
+function outputPath(file) {
+  if (!file.endsWith(".html") || file === "index.html" || file === "404.html") {
+    return file;
+  }
+  return `${file.replace(/\.html$/, "")}/index.html`;
 }
 
 function absoluteImageUrl(image = assetImage) {
@@ -222,7 +255,7 @@ function header(activeFile) {
   const nav = navItems
     .map(([href, label]) => {
       const active = href === activeFile ? " is-active" : "";
-      return `<a class="navbar-item${active}" href="${href}">${escapeHtml(label)}</a>`;
+      return `<a class="navbar-item${active}" href="${pageHref(href)}">${escapeHtml(label)}</a>`;
     })
     .join("\n");
 
@@ -230,7 +263,7 @@ function header(activeFile) {
 <nav class="navbar is-sticky-top navigation site-nav" role="navigation" aria-label="Основная навигация">
   <div class="container">
     <div class="navbar-brand">
-      <a class="navbar-item brand-link" href="index.html" aria-label="Remtehcom - ремонт бытовой техники в Туле">
+      <a class="navbar-item brand-link" href="${pageHref("index.html")}" aria-label="Remtehcom - ремонт бытовой техники в Туле">
         <span class="brand-mark">R</span>
         <span class="brand-copy"><strong>Remtehcom</strong><small>ремонт техники в Туле</small></span>
       </a>
@@ -247,7 +280,7 @@ function header(activeFile) {
       <div class="navbar-end ml-0">
         <div class="navbar-item py-0 nav-contacts">
           <a href="${phoneHref(company.phone)}" class="nav-phone">${escapeHtml(company.phone)}</a>
-          <a href="contact.html#request" class="btn btn-sm btn-primary ml-4">Вызвать мастера</a>
+          <a href="${pageHref("contact.html#request")}" class="btn btn-sm btn-primary ml-4">Вызвать мастера</a>
         </div>
       </div>
     </div>
@@ -258,7 +291,7 @@ function header(activeFile) {
 function footer() {
   const serviceLinks = services
     .slice(0, 6)
-    .map((service) => `<li><a href="${serviceFile(service)}">${escapeHtml(service.name)}</a></li>`)
+    .map((service) => `<li><a href="${pageHref(serviceFile(service))}">${escapeHtml(service.name)}</a></li>`)
     .join("\n");
 
   return `
@@ -266,7 +299,7 @@ function footer() {
   <div class="container">
     <div class="columns is-multiline">
       <div class="column is-4-desktop is-12-tablet">
-        <a class="footer-brand" href="index.html">
+        <a class="footer-brand" href="${pageHref("index.html")}">
           <span class="brand-mark">R</span>
           <span><strong>Remtehcom</strong><small>сервисный центр в Туле</small></span>
         </a>
@@ -289,7 +322,7 @@ function footer() {
     </div>
     <div class="footer-bottom">
       <span>© ${new Date().getFullYear()} ${escapeHtml(company.name)}. Ремонт бытовой техники в Туле.</span>
-      <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="${pageHref("privacy.html")}">Политика конфиденциальности</a>
     </div>
   </div>
 </footer>`;
@@ -310,7 +343,7 @@ function breadcrumbsHtml(items) {
           const isHome = index === 0;
           const linkClass = isHome ? ' class="home-link"' : "";
           const linkText = isHome ? `<i class="ti-home" aria-hidden="true"></i><span>${escapeHtml(item.name)}</span>` : escapeHtml(item.name);
-          return `<li>${isLast ? `<span aria-current="page">${escapeHtml(item.name)}</span>` : `<a${linkClass} href="${item.file}">${linkText}</a>`}</li>`;
+          return `<li>${isLast ? `<span aria-current="page">${escapeHtml(item.name)}</span>` : `<a${linkClass} href="${pageHref(item.file)}">${linkText}</a>`}</li>`;
         })
         .join("\n")}
     </ol>
@@ -348,10 +381,10 @@ function layout({ file, activeFile = file, title, description, keywords = defaul
   <meta property="og:image" content="${attr(absoluteImageUrl(pageImage))}">
   <meta property="og:locale" content="ru_RU">
   <meta name="theme-name" content="remtehcom-service-site">
-  <link rel="stylesheet" href="plugins/bulma/bulma.min.css">
-  <link rel="stylesheet" href="plugins/themify-icons/themify-icons.css">
-  <link href="css/style.css" rel="stylesheet">
-  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="${sitePath("plugins/bulma/bulma.min.css")}">
+  <link rel="stylesheet" href="${sitePath("plugins/themify-icons/themify-icons.css")}">
+  <link href="${sitePath("css/style.css")}" rel="stylesheet">
+  <link rel="icon" href="${sitePath("images/favicon.svg")}" type="image/svg+xml">
   ${schemaBlocks.map(scriptJson).join("\n  ")}
 </head>
 <body>
@@ -361,11 +394,11 @@ ${breadcrumbsHtml(breadcrumbs)}
 ${body}
 </main>
 ${footer()}
-<script src="plugins/jQuery/jquery.min.js"></script>
-<script src="plugins/masonry/masonry.min.js"></script>
-<script src="plugins/clipboard/clipboard.min.js"></script>
-<script src="plugins/match-height/jquery.matchHeight-min.js"></script>
-<script src="js/script.js"></script>
+<script src="${sitePath("plugins/jQuery/jquery.min.js")}"></script>
+<script src="${sitePath("plugins/masonry/masonry.min.js")}"></script>
+<script src="${sitePath("plugins/clipboard/clipboard.min.js")}"></script>
+<script src="${sitePath("plugins/match-height/jquery.matchHeight-min.js")}"></script>
+<script src="${sitePath("js/script.js")}"></script>
 </body>
 </html>
 `;
@@ -383,7 +416,7 @@ function hero({ h1, lead, kicker = "Сервисный центр в Туле", 
   const heroImage = image || assetImage;
   return `
 <section class="section hero-section${compact ? " hero-compact" : ""}">
-  <img src="${attr(heroImage)}" alt="${attr(imageAlt || "Мастер по ремонту бытовой техники в Туле")}" class="hero-background">
+  <img src="${attr(sitePath(heroImage))}" alt="${attr(imageAlt || "Мастер по ремонту бытовой техники в Туле")}" class="hero-background">
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-content has-text-centered-mobile has-text-left-desktop">
@@ -392,7 +425,7 @@ function hero({ h1, lead, kicker = "Сервисный центр в Туле", 
         <p class="hero-lead">${escapeHtml(lead)}</p>
         <div class="hero-actions">
           <a href="${phoneHref(company.phone)}" class="btn btn-primary">Позвонить мастеру</a>
-          <a href="contact.html#request" class="btn btn-outline-primary">Оставить заявку</a>
+          <a href="${pageHref("contact.html#request")}" class="btn btn-outline-primary">Оставить заявку</a>
         </div>
         <ul class="hero-badges">
           <li>Тула и область</li>
@@ -416,12 +449,12 @@ function serviceCards(list = services) {
   <div class="column is-4-widescreen is-4-desktop is-6-tablet">
     <article class="card service-card match-height">
       <figure class="service-card-image">
-        <img src="${attr(image)}" alt="${attr(`${service.name} в Туле`)}" loading="lazy">
+        <img src="${attr(sitePath(image))}" alt="${attr(`${service.name} в Туле`)}" loading="lazy">
       </figure>
       <div class="card-body">
         <h3 class="card-title h4">${escapeHtml(service.name)}</h3>
         <p class="card-text">${escapeHtml(service.lead)}</p>
-        <a href="${serviceFile(service)}" class="card-link">Подробнее об услуге</a>
+        <a href="${pageHref(serviceFile(service))}" class="card-link">Подробнее об услуге</a>
       </div>
     </article>
   </div>`;
@@ -485,7 +518,7 @@ function semanticClusterBlock(groups, title = "Популярные поиско
           <h3>${escapeHtml(group.title)}</h3>
           <div class="query-list">
             ${group.items
-              .map((item) => `<a href="${attr(item.href)}" class="query-chip">${escapeHtml(item.label)}</a>`)
+              .map((item) => `<a href="${attr(pageHref(item.href))}" class="query-chip">${escapeHtml(item.label)}</a>`)
               .join("\n")}
           </div>
         </article>
@@ -789,7 +822,7 @@ function contactCta(title = "Нужен мастер по ремонту быт�
       </div>
       <div class="cta-actions">
         <a href="${phoneHref(company.phone)}" class="btn btn-primary">${escapeHtml(company.phone)}</a>
-        <a href="contact.html#request" class="btn btn-outline-primary">Оставить заявку</a>
+        <a href="${pageHref("contact.html#request")}" class="btn btn-outline-primary">Оставить заявку</a>
       </div>
     </div>
   </div>
@@ -838,7 +871,7 @@ function compactPricesBlock() {
         <thead><tr><th>Услуга</th><th>Ориентир</th><th>Страница</th></tr></thead>
         <tbody>
           ${services
-            .map((service) => `<tr><td>${escapeHtml(service.name)}</td><td>${escapeHtml(service.priceRows[1][1])}</td><td><a href="${serviceFile(service)}">Подробнее</a></td></tr>`)
+            .map((service) => `<tr><td>${escapeHtml(service.name)}</td><td>${escapeHtml(service.priceRows[1][1])}</td><td><a href="${pageHref(serviceFile(service))}">Подробнее</a></td></tr>`)
             .join("\n")}
         </tbody>
       </table>
@@ -1081,7 +1114,7 @@ ${list
         <span class="article-tag">${escapeHtml(article.service.short)}</span>
         <h3 class="card-title h4">${escapeHtml(article.h1)}</h3>
         <p class="card-text">${escapeHtml(article.lead)}</p>
-        <a href="${articleFile(article)}" class="card-link">Подробнее об услуге</a>
+        <a href="${pageHref(articleFile(article))}" class="card-link">Подробнее об услуге</a>
       </div>
     </article>
   </div>`
@@ -1184,24 +1217,24 @@ ${hero({
       <article class="column is-8-desktop content commercial-content article-content">
         ${article.sections.map(([title, text]) => `<h2>${escapeHtml(title)}</h2>\n<p>${escapeHtml(text)}</p>`).join("\n")}
         <h2>Куда перейти дальше</h2>
-        <p>Если проблема похожа на вашу, откройте страницу услуги «<a href="${serviceFile(article.service)}">${escapeHtml(article.service.name)}</a>» или оставьте заявку на диагностику в Туле. Также полезно посмотреть ориентировочные цены и FAQ по ремонту.</p>
+        <p>Если проблема похожа на вашу, откройте страницу услуги «<a href="${pageHref(serviceFile(article.service))}">${escapeHtml(article.service.name)}</a>» или оставьте заявку на диагностику в Туле. Также полезно посмотреть ориентировочные цены и FAQ по ремонту.</p>
       </article>
       <aside class="column is-4-desktop">
         <div class="side-panel">
           <h2 class="h4">Услуга по теме</h2>
           <p>${escapeHtml(article.service.lead)}</p>
-          <a href="${serviceFile(article.service)}" class="btn btn-primary">${escapeHtml(article.service.name)}</a>
+          <a href="${pageHref(serviceFile(article.service))}" class="btn btn-primary">${escapeHtml(article.service.name)}</a>
         </div>
         <div class="side-panel">
           <h2 class="h4">Еще по этой теме</h2>
           <ul class="side-links">
-            ${nearby.map((item) => `<li><a href="${articleFile(item)}">${escapeHtml(item.h1)}</a></li>`).join("\n")}
+            ${nearby.map((item) => `<li><a href="${pageHref(articleFile(item))}">${escapeHtml(item.h1)}</a></li>`).join("\n")}
           </ul>
         </div>
         <div class="side-panel">
           <h2 class="h4">Смежные услуги</h2>
           <ul class="side-links">
-            ${related.map((service) => `<li><a href="${serviceFile(service)}">${escapeHtml(service.name)}</a></li>`).join("\n")}
+            ${related.map((service) => `<li><a href="${pageHref(serviceFile(service))}">${escapeHtml(service.name)}</a></li>`).join("\n")}
           </ul>
         </div>
       </aside>
@@ -1257,12 +1290,12 @@ ${hero({
           <h2 class="h4">Вызвать мастера</h2>
           <p>Опишите поломку и назовите модель техники. Мастер подскажет ориентир по диагностике и времени выезда.</p>
           <a href="${phoneHref(company.phone)}" class="btn btn-primary">${escapeHtml(company.phone)}</a>
-          <a href="contact.html#request" class="btn btn-outline-primary">Заявка онлайн</a>
+          <a href="${pageHref("contact.html#request")}" class="btn btn-outline-primary">Заявка онлайн</a>
         </div>
         <div class="side-panel">
           <h2 class="h4">Другие услуги</h2>
           <ul class="side-links">
-            ${related.map((item) => `<li><a href="${serviceFile(item)}">${escapeHtml(item.name)}</a></li>`).join("\n")}
+            ${related.map((item) => `<li><a href="${pageHref(serviceFile(item))}">${escapeHtml(item.name)}</a></li>`).join("\n")}
           </ul>
         </div>
       </aside>
@@ -1312,7 +1345,7 @@ ${hero({
           (service) => `
       <div class="column is-6-desktop">
         <article class="price-card match-height">
-          <h2 class="h4"><a href="${serviceFile(service)}">${escapeHtml(service.name)}</a></h2>
+          <h2 class="h4"><a href="${pageHref(serviceFile(service))}">${escapeHtml(service.name)}</a></h2>
           ${pricesTable(service)}
         </article>
       </div>`
@@ -1458,8 +1491,8 @@ function renderNotFound() {
     <h1>Страница не найдена</h1>
     <p>Возможно, адрес изменился. Перейдите к услугам Remtehcom или свяжитесь с мастером по ремонту бытовой техники в Туле.</p>
     <div class="hero-actions is-justify-content-center">
-      <a href="services.html" class="btn btn-primary">Все услуги</a>
-      <a href="contact.html#request" class="btn btn-outline-primary">Связаться</a>
+      <a href="${pageHref("services.html")}" class="btn btn-primary">Все услуги</a>
+      <a href="${pageHref("contact.html#request")}" class="btn btn-outline-primary">Связаться</a>
     </div>
   </div>
 </section>`;
@@ -1539,18 +1572,39 @@ function htaccess() {
 RewriteEngine On
 
 RewriteCond %{THE_REQUEST} \\s/+(.+?)\\.html[\\s?] [NC]
-RewriteRule ^ /%1 [R=301,L,NE]
-
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.+?)/?$ $1.html [L]
+RewriteRule ^ /%1/ [R=301,L,NE]
 
 ErrorDocument 404 /404.html
 `;
 }
 
 function write(file, content) {
-  fs.writeFileSync(path.join(outDir, file), content, "utf8");
+  writeRaw(outputPath(file), content);
+}
+
+function writeRaw(file, content) {
+  const fullPath = path.join(outDir, file);
+  fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+  fs.writeFileSync(fullPath, content, "utf8");
+}
+
+function legacyRedirect(file) {
+  const target = canonicalUrl(file);
+  return `<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=${attr(target)}">
+  <link rel="canonical" href="${attr(target)}">
+  <meta name="robots" content="noindex, follow">
+  <script>location.replace(${JSON.stringify(target)});</script>
+  <title>Переадресация | Remtehcom</title>
+</head>
+<body>
+  <p>Переадресация на <a href="${attr(target)}">${escapeHtml(target)}</a>.</p>
+</body>
+</html>
+`;
 }
 
 function build() {
@@ -1573,9 +1627,25 @@ function build() {
     write(articleFile(article), renderArticle(article));
   });
 
-  write("sitemap.xml", sitemap());
-  write("robots.txt", robots());
-  write(".htaccess", htaccess());
+  const legacyFiles = [
+    "about.html",
+    "services.html",
+    "article.html",
+    "prices.html",
+    "reviews.html",
+    "faq.html",
+    "contact.html",
+    "privacy.html",
+    ...services.map(serviceFile),
+    ...articles.map(articleFile)
+  ];
+  legacyFiles.forEach((file) => {
+    writeRaw(file, legacyRedirect(file));
+  });
+
+  writeRaw("sitemap.xml", sitemap());
+  writeRaw("robots.txt", robots());
+  writeRaw(".htaccess", htaccess());
 }
 
 build();
