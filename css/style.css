@@ -1198,6 +1198,12 @@ body {
   margin-right: 0;
 }
 
+.nav-phone-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
 .nav-phone-icon:hover,
 .nav-phone-icon:focus {
   transform: translateY(-1px);
