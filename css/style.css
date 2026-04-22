@@ -1764,6 +1764,36 @@ body {
   font-size: 14px;
 }
 
+.form-status {
+  display: none;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-status.is-pending,
+.form-status.is-success,
+.form-status.is-error {
+  display: block;
+}
+
+.form-status.is-pending {
+  background: #fff6da;
+  color: #8f6400;
+}
+
+.form-status.is-success {
+  background: #e8f8ef;
+  color: #177245;
+}
+
+.form-status.is-error {
+  background: #ffe7ed;
+  color: #b42349;
+}
+
 .map-frame {
   width: 100%;
   height: 420px;

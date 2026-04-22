@@ -275,3 +275,108 @@
 	});
 
 })(jQuery);
+
+(function () {
+	'use strict';
+
+	function textOrDash(value) {
+		return String(value || '').trim() || 'не указано';
+	}
+
+	function escapeHtml(value) {
+		return String(value)
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;');
+	}
+
+	function buildTelegramMessage(formData) {
+		var lines = [
+			'<b>Новая заявка с сайта Remtehcom</b>',
+			'',
+			'<b>Имя:</b> ' + escapeHtml(textOrDash(formData.get('name'))),
+			'<b>Телефон:</b> ' + escapeHtml(textOrDash(formData.get('phone'))),
+			'<b>Техника:</b> ' + escapeHtml(textOrDash(formData.get('service'))),
+			'<b>Описание:</b> ' + escapeHtml(textOrDash(formData.get('message'))),
+			'<b>Страница:</b> ' + escapeHtml(window.location.href),
+			'<b>Время:</b> ' + escapeHtml(new Date().toLocaleString('ru-RU'))
+		];
+
+		return lines.join('\n');
+	}
+
+	function setStatus(statusNode, message, kind) {
+		if (!statusNode) {
+			return;
+		}
+
+		statusNode.textContent = message;
+		statusNode.className = 'form-status is-' + kind;
+	}
+
+	function setupTelegramForm(form) {
+		var config = window.REMTEHCOM_TELEGRAM || {};
+		var statusNode = form.querySelector('[data-form-status]');
+		var submitButton = form.querySelector('button[type="submit"]');
+		var submitLabel = submitButton ? (submitButton.getAttribute('data-submit-label') || submitButton.textContent) : '';
+
+		form.addEventListener('submit', function (event) {
+			event.preventDefault();
+
+			if (!config.enabled || !config.botToken || !config.chatId) {
+				setStatus(statusNode, 'Отправка пока не настроена. Добавьте токен бота и chat_id в js/telegram-form-config.js.', 'error');
+				return;
+			}
+
+			var formData = new FormData(form);
+			if (!String(formData.get('phone') || '').trim()) {
+				setStatus(statusNode, 'Укажите телефон для связи.', 'error');
+				return;
+			}
+
+			if (submitButton) {
+				submitButton.disabled = true;
+				submitButton.textContent = 'Отправляем...';
+			}
+			setStatus(statusNode, 'Отправляем заявку в Telegram...', 'pending');
+
+			fetch('https://api.telegram.org/bot' + encodeURIComponent(config.botToken) + '/sendMessage', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					chat_id: config.chatId,
+					text: buildTelegramMessage(formData),
+					parse_mode: 'HTML',
+					disable_web_page_preview: true
+				})
+			})
+				.then(function (response) {
+					if (!response.ok) {
+						throw new Error('HTTP ' + response.status);
+					}
+					return response.json();
+				})
+				.then(function (payload) {
+					if (!payload.ok) {
+						throw new Error(payload.description || 'Telegram API error');
+					}
+					form.reset();
+					setStatus(statusNode, 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.', 'success');
+				})
+				.catch(function () {
+					setStatus(statusNode, 'Не удалось отправить заявку. Проверьте настройки Telegram или попробуйте ещё раз.', 'error');
+				})
+				.finally(function () {
+					if (submitButton) {
+						submitButton.disabled = false;
+						submitButton.textContent = submitLabel;
+					}
+				});
+		});
+	}
+
+	Array.prototype.forEach.call(document.querySelectorAll('[data-telegram-form]'), setupTelegramForm);
+})();

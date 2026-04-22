@@ -422,6 +422,7 @@ ${footer()}
 <script src="${sitePath("plugins/masonry/masonry.min.js")}"></script>
 <script src="${sitePath("plugins/clipboard/clipboard.min.js")}"></script>
 <script src="${sitePath("plugins/match-height/jquery.matchHeight-min.js")}"></script>
+<script src="${sitePath("js/telegram-form-config.js")}"></script>
 <script src="${sitePath("js/script.js")}"></script>
 </body>
 </html>
@@ -925,7 +926,7 @@ function contactBlock() {
         </div>
       </div>
       <div class="column is-7-desktop">
-        <form class="request-form" action="#" method="post">
+        <form class="request-form" action="#" method="post" data-telegram-form>
           <div class="columns is-multiline">
             <div class="form-group column is-6-desktop">
               <label for="name">Ваше имя</label>
@@ -947,8 +948,9 @@ function contactBlock() {
               <textarea class="input" id="message" name="message" placeholder="Например: холодильник не морозит, стиральная машина не сливает воду"></textarea>
             </div>
             <div class="column is-12">
-              <button class="btn btn-primary" type="submit">Отправить заявку</button>
-              <p class="form-note">Форма демонстрационная для статического сайта. Для срочного ремонта звоните по телефону.</p>
+              <button class="btn btn-primary" type="submit" data-submit-label="Отправить заявку">Отправить заявку</button>
+              <div class="form-status" data-form-status aria-live="polite"></div>
+              <p class="form-note">Заявка отправляется без перезагрузки страницы. Если нужен очень срочный выезд, лучше сразу позвонить.</p>
             </div>
           </div>
         </form>
