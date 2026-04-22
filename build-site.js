@@ -28,6 +28,35 @@ const defaultKeywords = [
   "ремонт кондиционеров Тула"
 ];
 
+const homeSemanticGroupsData = [
+  {
+    title: "Коммерческие запросы",
+    items: [
+      { label: "ремонт бытовой техники в Туле", href: "services.html" },
+      { label: "мастер по ремонту бытовой техники в Туле", href: "contact.html#request" },
+      { label: "ремонт холодильников Тула", href: "remont-holodilnikov-tula.html" },
+      { label: "ремонт стиральных машин Тула", href: "remont-stiralnyh-mashin-tula.html" },
+      { label: "ремонт посудомоечных машин Тула", href: "remont-posudomoechnyh-mashin-tula.html" },
+      { label: "срочный ремонт бытовой техники Тула", href: "srochnyy-remont-bytovoy-tehniki-v-tule.html" },
+      { label: "цены на ремонт бытовой техники Тула", href: "prices.html" },
+      { label: "ремонт техники Тульская область", href: "remont-tehniki-v-tulskoy-oblasti.html" }
+    ]
+  },
+  {
+    title: "Информационные запросы",
+    items: [
+      { label: "почему не включается холодильник", href: "remont-holodilnikov-tula-ne-vklyuchaetsya.html" },
+      { label: "холодильник течет что делать", href: "remont-holodilnikov-tula-techet.html" },
+      { label: "стиральная машина шумит при отжиме", href: "remont-stiralnyh-mashin-tula-shumit.html" },
+      { label: "посудомоечная машина ошибка", href: "remont-posudomoechnyh-mashin-tula-oshibka.html" },
+      { label: "телевизор не включается", href: "remont-televizorov-tula-ne-vklyuchaetsya.html" },
+      { label: "микроволновка не греет", href: "remont-mikrovolnovok-tula-ne-vklyuchaetsya.html" },
+      { label: "кондиционер течет", href: "remont-kondicionerov-tula-techet.html" },
+      { label: "варочная панель ошибка", href: "remont-varochnyh-paneley-tula-oshibka.html" }
+    ]
+  }
+];
+
 const navItems = [
   ["index.html", "Главная"],
   ["services.html", "Услуги"],
@@ -400,6 +429,72 @@ function serviceCards(list = services) {
     )
     .join("\n")}
 </div>`;
+}
+
+function serviceSemanticGroups(service) {
+  const relatedArticlesMap = {
+    "remont-holodilnikov-tula": [
+      { label: "почему не включается холодильник", href: "remont-holodilnikov-tula-ne-vklyuchaetsya.html" },
+      { label: "холодильник течет", href: "remont-holodilnikov-tula-techet.html" },
+      { label: "холодильник шумит", href: "remont-holodilnikov-tula-shumit.html" },
+      { label: "ошибка холодильника", href: "remont-holodilnikov-tula-oshibka.html" }
+    ],
+    "remont-stiralnyh-mashin-tula": [
+      { label: "стиральная машина не включается", href: "remont-stiralnyh-mashin-tula-ne-vklyuchaetsya.html" },
+      { label: "стиральная машина течет", href: "remont-stiralnyh-mashin-tula-techet.html" },
+      { label: "стиральная машина шумит", href: "remont-stiralnyh-mashin-tula-shumit.html" },
+      { label: "ошибка стиральной машины", href: "remont-stiralnyh-mashin-tula-oshibka.html" }
+    ],
+    "remont-posudomoechnyh-mashin-tula": [
+      { label: "посудомоечная машина не включается", href: "remont-posudomoechnyh-mashin-tula-ne-vklyuchaetsya.html" },
+      { label: "посудомоечная машина течет", href: "remont-posudomoechnyh-mashin-tula-techet.html" },
+      { label: "посудомоечная машина шумит", href: "remont-posudomoechnyh-mashin-tula-shumit.html" },
+      { label: "ошибка посудомоечной машины", href: "remont-posudomoechnyh-mashin-tula-oshibka.html" }
+    ]
+  };
+
+  return [
+    {
+      title: "Коммерческие формулировки",
+      items: service.keywords.slice(0, 6).map((keyword) => ({
+        label: keyword,
+        href: serviceFile(service)
+      }))
+    },
+    {
+      title: "Информационные формулировки",
+      items: relatedArticlesMap[service.slug] || relatedArticles(service, 4).map((article) => ({
+        label: article.h1.toLowerCase(),
+        href: articleFile(article)
+      }))
+    }
+  ];
+}
+
+function semanticClusterBlock(groups, title = "Популярные поисковые запросы", subtitle = "Собрали ключевые формулировки, по которым пользователи в Туле ищут услуги, цены, диагностику и ответы по типовым симптомам.") {
+  return `
+<section class="section">
+  <div class="container">
+    ${sectionHeader(title, subtitle)}
+    <div class="columns is-multiline">
+      ${groups
+        .map(
+          (group) => `
+      <div class="column is-6-desktop">
+        <article class="semantic-card match-height">
+          <h3>${escapeHtml(group.title)}</h3>
+          <div class="query-list">
+            ${group.items
+              .map((item) => `<a href="${attr(item.href)}" class="query-chip">${escapeHtml(item.label)}</a>`)
+              .join("\n")}
+          </div>
+        </article>
+      </div>`
+        )
+        .join("\n")}
+    </div>
+  </div>
+</section>`;
 }
 
 const articleTopics = [
@@ -822,6 +917,7 @@ ${hero({
     ${serviceCards()}
   </div>
 </section>
+${semanticClusterBlock(homeSemanticGroupsData, "Семантика спроса по Туле", "Разделили основные поисковые формулировки на коммерческие запросы по услугам и информационные запросы по симптомам и неисправностям.")}
 ${benefitsBlock()}
 ${processBlock()}
 <section class="section soft-section">
@@ -907,6 +1003,7 @@ ${hero({
     ${serviceCards()}
   </div>
 </section>
+${semanticClusterBlock(homeSemanticGroupsData, "Коммерческие и информационные кластеры", "Эти формулировки закрывают и коммерческий спрос по услугам, и информационные запросы по симптомам, ошибкам и типовым неисправностям.")}
 ${compactPricesBlock()}
 ${contactCta("Не нашли свою технику в списке?")}`;
 
@@ -1133,6 +1230,7 @@ ${hero({
     </div>
   </div>
 </section>
+${semanticClusterBlock(serviceSemanticGroups(service), `Запросы по услуге «${service.short}»`, "Здесь собраны коммерческие формулировки по этой услуге и информационные запросы по симптомам, которые удобно закрывать отдельными статьями и FAQ.")}
 ${benefitsBlock(`Преимущества услуги «${service.short}»`)}
 ${processBlock()}
 ${serviceArticlesBlock(service)}
