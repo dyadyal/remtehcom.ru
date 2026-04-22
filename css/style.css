@@ -1438,6 +1438,21 @@ body {
 .service-card .card-text,
 .article-card .card-text {
   margin-bottom: 0;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.service-card .card-title,
+.article-card .card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  min-height: 2.5em;
 }
 
 .service-card .card-link,
