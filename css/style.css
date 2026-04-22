@@ -1415,7 +1415,7 @@ body {
   object-fit: cover;
 }
 
-.service-card .card-link {
+.card-link {
   display: inline-flex;
   margin-top: 12px;
   color: var(--rt-red);
