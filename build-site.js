@@ -1326,7 +1326,6 @@ ${hero({
     </div>
   </div>
 </section>
-${semanticClusterBlock(serviceSemanticGroups(service), `Запросы по услуге «${service.short}»`, "Здесь собраны коммерческие формулировки по этой услуге и информационные запросы по симптомам, которые удобно закрывать отдельными статьями и FAQ.")}
 ${benefitsBlock(`Преимущества услуги «${service.short}»`)}
 ${processBlock()}
 ${serviceArticlesBlock(service)}
