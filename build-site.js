@@ -30,7 +30,7 @@ const defaultKeywords = [
 const navItems = [
   ["index.html", "Главная"],
   ["services.html", "Услуги"],
-  ["articles.html", "Статьи"],
+  ["article.html", "Статьи"],
   ["prices.html", "Цены"],
   ["about.html", "О компании"],
   ["reviews.html", "Отзывы"],
@@ -907,14 +907,11 @@ function articleCards(list = articles) {
       (article) => `
   <div class="column is-4-widescreen is-4-desktop is-6-tablet">
     <article class="card article-card match-height">
-      <figure class="service-card-image">
-        <img src="${attr(article.image)}" alt="${attr(article.h1)}" loading="lazy">
-      </figure>
       <div class="card-body">
         <span class="article-tag">${escapeHtml(article.service.short)}</span>
         <h3 class="card-title h4">${escapeHtml(article.h1)}</h3>
         <p class="card-text">${escapeHtml(article.lead)}</p>
-        <a href="${articleFile(article)}" class="card-link">Читать статью</a>
+        <a href="${articleFile(article)}" class="card-link">Подробнее об услуге</a>
       </div>
     </article>
   </div>`
@@ -941,14 +938,14 @@ ${hero({
 ${contactCta("Нужна консультация по ремонту техники?")}`;
 
   return layout({
-    file: "articles.html",
-    activeFile: "articles.html",
+    file: "article.html",
+    activeFile: "article.html",
     title: "Статьи о ремонте бытовой техники в Туле | Remtehcom",
     description: "100 полезных статей Remtehcom о ремонте бытовой техники в Туле: холодильники, стиральные машины, телевизоры, кондиционеры, цены и диагностика.",
     keywords: ["статьи ремонт бытовой техники Тула", "ремонт техники советы", "ремонт холодильников статьи", "ремонт стиральных машин статьи", "мастер по ремонту техники Тула"],
     breadcrumbs: [
       { name: "Главная", file: "index.html" },
-      { name: "Статьи", file: "articles.html" }
+      { name: "Статьи", file: "article.html" }
     ],
     body
   });
@@ -1002,14 +999,14 @@ ${contactCta(`Заказать ${article.service.name.toLowerCase()} в Туле
 
   return layout({
     file: articleFile(article),
-    activeFile: "articles.html",
+    activeFile: "article.html",
     title: article.title,
     description: article.description,
     keywords: article.keywords,
     image: article.image,
     breadcrumbs: [
       { name: "Главная", file: "index.html" },
-      { name: "Статьи", file: "articles.html" },
+      { name: "Статьи", file: "article.html" },
       { name: article.h1, file: articleFile(article) }
     ],
     schemas: [articleSchema(article)],
@@ -1294,7 +1291,7 @@ function sitemap() {
     "index.html",
     "about.html",
     "services.html",
-    "articles.html",
+    "article.html",
     "prices.html",
     "reviews.html",
     "faq.html",
@@ -1344,7 +1341,7 @@ function build() {
   write("index.html", renderHome());
   write("about.html", renderAbout());
   write("services.html", renderServices());
-  write("articles.html", renderArticles());
+  write("article.html", renderArticles());
   write("prices.html", renderPrices());
   write("reviews.html", renderReviews());
   write("faq.html", renderFaqPage());
