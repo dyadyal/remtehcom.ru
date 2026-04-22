@@ -225,13 +225,16 @@ function breadcrumbsHtml(items) {
   }
 
   return `
-<nav class="breadcrumbs-bar" aria-label="Хлебные крошки">
+<nav class="breadcrumb-trail" aria-label="Хлебные крошки">
   <div class="container">
     <ol>
       ${items
         .map((item, index) => {
           const isLast = index === items.length - 1;
-          return `<li>${isLast ? `<span>${escapeHtml(item.name)}</span>` : `<a href="${item.file}">${escapeHtml(item.name)}</a>`}</li>`;
+          const isHome = index === 0;
+          const linkClass = isHome ? ' class="home-link"' : "";
+          const linkText = isHome ? `<i class="ti-home" aria-hidden="true"></i><span>${escapeHtml(item.name)}</span>` : escapeHtml(item.name);
+          return `<li>${isLast ? `<span aria-current="page">${escapeHtml(item.name)}</span>` : `<a${linkClass} href="${item.file}">${linkText}</a>`}</li>`;
         })
         .join("\n")}
     </ol>
@@ -542,9 +545,9 @@ function contactBlock() {
 function renderHome() {
   const body = `
 ${hero({
-  h1: "Ремонт бытовой техники в Туле на дому",
+  h1: "Ремонт бытовой техники в Туле",
   lead: "Remtehcom - мастер по ремонту бытовой техники в Туле. Ремонтируем холодильники, стиральные машины, посудомойки, телевизоры, микроволновки, кондиционеры, плиты и другую технику с гарантией.",
-  imageAlt: "Ремонт бытовой техники в Туле на дому"
+  imageAlt: "Ремонт бытовой техники в Туле"
 })}
 <section class="section">
   <div class="container">
