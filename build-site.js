@@ -98,8 +98,12 @@ function routePath(file) {
   return `/${file.replace(/^\/+/, "")}`;
 }
 
+function siteOrigin() {
+  return String(company.baseUrl || "").replace(/\/+$/, "");
+}
+
 function canonicalUrl(file) {
-  return `${company.baseUrl}${routePath(file)}`;
+  return `${siteOrigin()}${routePath(file)}`;
 }
 
 function pageHref(value) {
@@ -126,7 +130,7 @@ function outputPath(file) {
 }
 
 function absoluteImageUrl(image = assetImage) {
-  return `${company.baseUrl}/${image || assetImage}`;
+  return `${siteOrigin()}${sitePath(image || assetImage)}`;
 }
 
 function keywordsContent(keywords = defaultKeywords) {
@@ -138,11 +142,11 @@ function scriptJson(data) {
 }
 
 function localBusinessSchema() {
-  return {
+  const origin = siteOrigin();
+  const schema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: company.legalName,
-    url: company.baseUrl,
     image: absoluteImageUrl(assetImage),
     telephone: [company.phone, company.mobile],
     email: company.email,
@@ -163,9 +167,15 @@ function localBusinessSchema() {
     areaServed: [
       { "@type": "City", name: company.city },
       { "@type": "AdministrativeArea", name: company.region }
-    ],
-    sameAs: [company.baseUrl]
+    ]
   };
+
+  if (origin) {
+    schema.url = origin;
+    schema.sameAs = [origin];
+  }
+
+  return schema;
 }
 
 function breadcrumbsSchema(items) {
@@ -229,6 +239,7 @@ function serviceSchema(service) {
 }
 
 function articleSchema(article) {
+  const origin = siteOrigin();
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -244,7 +255,7 @@ function articleSchema(article) {
       name: company.legalName,
       logo: {
         "@type": "ImageObject",
-        url: `${company.baseUrl}/images/logo.png`
+        url: `${origin}${sitePath("images/logo.png")}`
       }
     },
     mainEntityOfPage: canonicalUrl(articleFile(article))
@@ -1550,10 +1561,13 @@ function sitemap() {
     ...articles.map(articleFile)
   ];
 
+  const origin = siteOrigin();
+  const loc = (file) => `${origin}${routePath(file)}`;
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages
-  .map((file) => `  <url><loc>${canonicalUrl(file)}</loc></url>`)
+  .map((file) => `  <url><loc>${loc(file)}</loc></url>`)
   .join("\n")}
 </urlset>
 `;
@@ -1562,8 +1576,7 @@ ${pages
 function robots() {
   return `User-agent: *
 Allow: /
-
-Sitemap: ${company.baseUrl}/sitemap.xml
+${siteOrigin() ? `\nSitemap: ${siteOrigin()}/sitemap.xml` : ""}
 `;
 }
 
