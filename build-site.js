@@ -85,12 +85,26 @@ function phoneHref(value) {
   return `tel:${value.replace(/[^\d+]/g, "")}`;
 }
 
+function isServicePageFile(file) {
+  return file.endsWith(".html") && services.some((service) => serviceFile(service) === file);
+}
+
+function isArticlePageFile(file) {
+  return file.endsWith(".html") && articles.some((article) => articleFile(article) === file);
+}
+
 function routePath(file) {
   if (file === "index.html") {
     return "/";
   }
   if (file === "404.html") {
     return "/404.html";
+  }
+  if (isServicePageFile(file)) {
+    return `/services/${file.replace(/\.html$/, "")}/`;
+  }
+  if (isArticlePageFile(file)) {
+    return `/article/${file.replace(/\.html$/, "")}/`;
   }
   if (file.endsWith(".html")) {
     return `/${file.replace(/\.html$/, "")}/`;
@@ -138,6 +152,12 @@ function sitePath(value) {
 function outputPath(file) {
   if (!file.endsWith(".html") || file === "index.html" || file === "404.html") {
     return file;
+  }
+  if (isServicePageFile(file)) {
+    return `services/${file.replace(/\.html$/, "")}/index.html`;
+  }
+  if (isArticlePageFile(file)) {
+    return `article/${file.replace(/\.html$/, "")}/index.html`;
   }
   return `${file.replace(/\.html$/, "")}/index.html`;
 }
@@ -1615,6 +1635,10 @@ function writeRaw(file, content) {
   fs.writeFileSync(fullPath, content, "utf8");
 }
 
+function removePath(targetPath) {
+  fs.rmSync(path.join(outDir, targetPath), { recursive: true, force: true });
+}
+
 function legacyRedirect(file) {
   const target = canonicalUrl(file);
   return `<!DOCTYPE html>
@@ -1635,6 +1659,14 @@ function legacyRedirect(file) {
 }
 
 function build() {
+  services.forEach((service) => {
+    removePath(service.slug);
+  });
+
+  articles.forEach((article) => {
+    removePath(article.slug);
+  });
+
   write("index.html", renderHome());
   write("about.html", renderAbout());
   write("services.html", renderServices());
