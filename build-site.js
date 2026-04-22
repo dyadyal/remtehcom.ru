@@ -100,11 +100,14 @@ function routePath(file) {
   if (file === "404.html") {
     return "/404.html";
   }
+  if (file === "article.html") {
+    return "/articles/";
+  }
   if (isServicePageFile(file)) {
     return `/services/${file.replace(/\.html$/, "")}/`;
   }
   if (isArticlePageFile(file)) {
-    return `/article/${file.replace(/\.html$/, "")}/`;
+    return `/articles/${file.replace(/\.html$/, "")}/`;
   }
   if (file.endsWith(".html")) {
     return `/${file.replace(/\.html$/, "")}/`;
@@ -153,11 +156,14 @@ function outputPath(file) {
   if (!file.endsWith(".html") || file === "index.html" || file === "404.html") {
     return file;
   }
+  if (file === "article.html") {
+    return "articles/index.html";
+  }
   if (isServicePageFile(file)) {
     return `services/${file.replace(/\.html$/, "")}/index.html`;
   }
   if (isArticlePageFile(file)) {
-    return `article/${file.replace(/\.html$/, "")}/index.html`;
+    return `articles/${file.replace(/\.html$/, "")}/index.html`;
   }
   return `${file.replace(/\.html$/, "")}/index.html`;
 }
@@ -1659,6 +1665,8 @@ function legacyRedirect(file) {
 }
 
 function build() {
+  removePath("article");
+  removePath("articles");
   services.forEach((service) => {
     removePath(service.slug);
   });
@@ -1700,6 +1708,11 @@ function build() {
   ];
   legacyFiles.forEach((file) => {
     writeRaw(file, legacyRedirect(file));
+  });
+
+  writeRaw("article/index.html", legacyRedirect("article.html"));
+  articles.forEach((article) => {
+    writeRaw(`article/${article.slug}/index.html`, legacyRedirect(articleFile(article)));
   });
 
   writeRaw("sitemap.xml", sitemap());
