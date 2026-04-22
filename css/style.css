@@ -1386,11 +1386,15 @@ body {
 }
 
 .service-card {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
 }
 
 .article-card {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
 }
@@ -1419,9 +1423,27 @@ body {
 
 .card-link {
   display: inline-flex;
-  margin-top: 12px;
+  margin-top: 18px;
   color: var(--rt-red);
   font-weight: 800;
+}
+
+.service-card .card-body,
+.article-card .card-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.service-card .card-text,
+.article-card .card-text {
+  margin-bottom: 0;
+}
+
+.service-card .card-link,
+.article-card .card-link {
+  margin-top: auto;
+  padding-top: 18px;
 }
 
 .card-icon {
