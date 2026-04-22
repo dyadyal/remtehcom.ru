@@ -5,6 +5,7 @@ const {
   benefits,
   process,
   reviews,
+  mapRatings,
   generalFaq,
   homeFaq,
   services
@@ -842,6 +843,7 @@ ${processBlock()}
 </section>
 ${compactPricesBlock()}
 ${reviewsBlock()}
+${mapRatingsBlock()}
 ${faqBlock(homeFaq, "home-faq")}
 ${contactCta()}`;
 
@@ -963,6 +965,34 @@ function serviceArticlesBlock(service) {
   <div class="container">
 ${sectionHeader(`Статьи по теме «${service.short}»`, "Подобрали материалы о диагностике, типовых симптомах, стоимости и срочном ремонте этой техники в Туле.")}
 ${articleCards(items)}
+  </div>
+</section>`;
+}
+
+function mapRatingsBlock() {
+  return `
+<section class="section soft-section">
+  <div class="container">
+    ${sectionHeader("Рейтинги на картах и в справочниках", "Показываем публичные карточки Remtehcom в геосервисах и каталогах, где пользователи оставляют оценки и отзывы о сервисном центре в Туле.")}
+    <div class="columns is-multiline">
+      ${mapRatings
+        .map(
+          (item) => `
+      <div class="column is-6-desktop">
+        <article class="rating-card match-height">
+          <div class="rating-card-head">
+            <h3>${escapeHtml(item.service)}</h3>
+            <span class="rating-badge">${escapeHtml(item.rating)}</span>
+          </div>
+          <p class="rating-count">${escapeHtml(item.count)}</p>
+          <p>${escapeHtml(item.text)}</p>
+          <a href="${attr(item.url)}" class="card-link" target="_blank" rel="noopener">Открыть карточку</a>
+        </article>
+      </div>`
+        )
+        .join("\n")}
+    </div>
+    <p class="source-note">Данные собраны по открытым карточкам компании и поисковой выдаче 22.04.2026. В блок включены только сервисы, где по открытым данным видна публичная оценка Remtehcom.</p>
   </div>
 </section>`;
 }
@@ -1180,6 +1210,7 @@ ${hero({
   imageAlt: "Отзывы клиентов Remtehcom в Туле"
 })}
 ${reviewsBlock()}
+${mapRatingsBlock()}
 ${contactCta("Оставить заявку на ремонт техники")}`;
 
   return layout({

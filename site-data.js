@@ -75,6 +75,23 @@ const reviews = [
   }
 ];
 
+const mapRatings = [
+  {
+    service: "2ГИС",
+    rating: "5,0",
+    count: "2 оценки",
+    text: "Карточка сервисного центра Remtehcom на карте 2ГИС по адресу г. Тула, ул. Октябрьская, 1.",
+    url: "https://2gis.ru/tula/firm/5067077861936712"
+  },
+  {
+    service: "Zoon",
+    rating: "4,0",
+    count: "2 оценки",
+    text: "Профиль компании Remtehcom в каталоге и на карте Zoon для Тулы и Октябрьской улицы, 1.",
+    url: "https://zoon.ru/tula/repair/servisnyj_tsentr_remtehcom/"
+  }
+];
+
 const generalFaq = [
   {
     question: "Можно ли вызвать мастера по ремонту бытовой техники на дом в Туле?",
@@ -663,6 +680,7 @@ module.exports = {
   benefits,
   process,
   reviews,
+  mapRatings,
   generalFaq,
   homeFaq,
   services

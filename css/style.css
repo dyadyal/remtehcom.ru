@@ -1374,6 +1374,7 @@ body {
 .article-card,
 .feature-tile,
 .review-card,
+.rating-card,
 .price-card,
 .contact-card,
 .request-form,
@@ -1428,6 +1429,7 @@ body {
 
 .feature-tile,
 .review-card,
+.rating-card,
 .price-card,
 .contact-card,
 .request-form,
@@ -1445,6 +1447,7 @@ body {
 .feature-tile p,
 .process-step p,
 .review-card p,
+.rating-card p,
 .side-panel p,
 .contact-card li,
 .price-note,
@@ -1575,6 +1578,52 @@ body {
   display: block;
   margin-top: 18px;
   color: var(--rt-ink);
+}
+
+.rating-card {
+  min-height: 100%;
+}
+
+.rating-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.rating-card-head h3 {
+  font-size: 21px;
+  margin-bottom: 0;
+}
+
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--rt-red);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.rating-count,
+.source-note {
+  color: var(--rt-muted);
+}
+
+.rating-count {
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.source-note {
+  margin-top: 18px;
+  text-align: center;
 }
 
 .commercial-content {
