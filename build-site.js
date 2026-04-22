@@ -364,7 +364,6 @@ function serviceCards(list = services) {
         <img src="${attr(image)}" alt="${attr(`${service.name} в Туле`)}" loading="lazy">
       </figure>
       <div class="card-body">
-        <i class="card-icon ${attr(service.icon)} mb-4" aria-hidden="true"></i>
         <h3 class="card-title h4">${escapeHtml(service.name)}</h3>
         <p class="card-text">${escapeHtml(service.lead)}</p>
         <a href="${serviceFile(service)}" class="card-link">Подробнее об услуге</a>
