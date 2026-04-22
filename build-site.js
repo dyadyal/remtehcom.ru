@@ -13,6 +13,18 @@ const {
 const outDir = __dirname;
 const serviceFile = (service) => `${service.slug}.html`;
 const assetImage = "images/banner.jpg";
+const defaultKeywords = [
+  "ремонт бытовой техники в Туле",
+  "мастер по ремонту бытовой техники Тула",
+  "ремонт техники Тульская область",
+  "вызов мастера Тула",
+  "срочный ремонт бытовой техники",
+  "ремонт холодильников Тула",
+  "ремонт стиральных машин Тула",
+  "ремонт посудомоечных машин Тула",
+  "ремонт телевизоров Тула",
+  "ремонт кондиционеров Тула"
+];
 
 const navItems = [
   ["index.html", "Главная"],
@@ -48,6 +60,14 @@ function canonicalUrl(file) {
   return `${company.baseUrl}/${file.replace(/\.html$/, "")}`;
 }
 
+function absoluteImageUrl(image = assetImage) {
+  return `${company.baseUrl}/${image || assetImage}`;
+}
+
+function keywordsContent(keywords = defaultKeywords) {
+  return Array.isArray(keywords) ? keywords.join(", ") : keywords;
+}
+
 function scriptJson(data) {
   return `<script type="application/ld+json">${JSON.stringify(data, null, 2).replace(/</g, "\\u003c")}</script>`;
 }
@@ -58,7 +78,7 @@ function localBusinessSchema() {
     "@type": "LocalBusiness",
     name: company.legalName,
     url: company.baseUrl,
-    image: `${company.baseUrl}/${assetImage}`,
+    image: absoluteImageUrl(assetImage),
     telephone: [company.phone, company.mobile],
     email: company.email,
     priceRange: "от 400 руб.",
@@ -117,6 +137,7 @@ function serviceSchema(service) {
     "@type": "Service",
     name: `${service.name} в Туле`,
     description: service.description,
+    image: absoluteImageUrl(service.image),
     provider: {
       "@type": "LocalBusiness",
       name: company.legalName,
@@ -242,8 +263,9 @@ function breadcrumbsHtml(items) {
 </nav>`;
 }
 
-function layout({ file, activeFile = file, title, description, body, breadcrumbs, faq = [], schemas = [], noindex = false }) {
+function layout({ file, activeFile = file, title, description, keywords = defaultKeywords, image = assetImage, body, breadcrumbs, faq = [], schemas = [], noindex = false }) {
   const url = canonicalUrl(file);
+  const pageImage = image || assetImage;
   const schemaBlocks = [
     localBusinessSchema(),
     breadcrumbsSchema(breadcrumbs || [{ name: "Главная", file: "index.html" }]),
@@ -261,13 +283,14 @@ function layout({ file, activeFile = file, title, description, body, breadcrumbs
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${attr(description)}">
+  <meta name="keywords" content="${attr(keywordsContent(keywords))}">
   ${noindex ? '<meta name="robots" content="noindex, follow">' : ""}
   <link rel="canonical" href="${attr(url)}">
   <meta property="og:type" content="website">
   <meta property="og:title" content="${attr(title)}">
   <meta property="og:description" content="${attr(description)}">
   <meta property="og:url" content="${attr(url)}">
-  <meta property="og:image" content="${attr(`${company.baseUrl}/${assetImage}`)}">
+  <meta property="og:image" content="${attr(absoluteImageUrl(pageImage))}">
   <meta property="og:locale" content="ru_RU">
   <meta name="theme-name" content="remtehcom-service-site">
   <link rel="stylesheet" href="plugins/bulma/bulma.min.css">
@@ -301,10 +324,11 @@ function sectionHeader(title, text = "") {
   </div>`;
 }
 
-function hero({ h1, lead, kicker = "Сервисный центр в Туле", imageAlt, compact = false }) {
+function hero({ h1, lead, kicker = "Сервисный центр в Туле", image = assetImage, imageAlt, compact = false }) {
+  const heroImage = image || assetImage;
   return `
 <section class="section hero-section${compact ? " hero-compact" : ""}">
-  <img src="${assetImage}" alt="${attr(imageAlt || "Мастер по ремонту бытовой техники в Туле")}" class="hero-background">
+  <img src="${attr(heroImage)}" alt="${attr(imageAlt || "Мастер по ремонту бытовой техники в Туле")}" class="hero-background">
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-content has-text-centered-mobile has-text-left-desktop">
@@ -331,9 +355,14 @@ function serviceCards(list = services) {
 <div class="columns is-multiline service-grid">
   ${list
     .map(
-      (service) => `
+      (service) => {
+        const image = service.image || assetImage;
+        return `
   <div class="column is-4-widescreen is-4-desktop is-6-tablet">
     <article class="card service-card match-height">
+      <figure class="service-card-image">
+        <img src="${attr(image)}" alt="${attr(`${service.name} в Туле`)}" loading="lazy">
+      </figure>
       <div class="card-body">
         <i class="card-icon ${attr(service.icon)} mb-4" aria-hidden="true"></i>
         <h3 class="card-title h4">${escapeHtml(service.name)}</h3>
@@ -341,7 +370,8 @@ function serviceCards(list = services) {
         <a href="${serviceFile(service)}" class="card-link">Подробнее об услуге</a>
       </div>
     </article>
-  </div>`
+  </div>`;
+      }
     )
     .join("\n")}
 </div>`;
@@ -669,6 +699,7 @@ ${hero({
   lead: service.lead,
   kicker: "Ремонт на дому в Туле",
   compact: true,
+  image: service.image,
   imageAlt: `${service.name} в Туле`
 })}
 <section class="section">
@@ -712,6 +743,8 @@ ${contactCta(`Заказать ${service.name.toLowerCase()} в Туле`)}`;
     activeFile: "services.html",
     title: service.title,
     description: service.description,
+    keywords: service.keywords,
+    image: service.image,
     breadcrumbs: [
       { name: "Главная", file: "index.html" },
       { name: "Услуги", file: "services.html" },

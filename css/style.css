@@ -1384,6 +1384,20 @@ body {
 
 .service-card {
   height: 100%;
+  overflow: hidden;
+}
+
+.service-card-image {
+  aspect-ratio: 16 / 9;
+  background: var(--rt-soft);
+  border-bottom: 1px solid var(--rt-line);
+}
+
+.service-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .service-card .card-link {
