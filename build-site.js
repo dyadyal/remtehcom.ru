@@ -98,12 +98,25 @@ function routePath(file) {
   return `/${file.replace(/^\/+/, "")}`;
 }
 
+function siteBasePath() {
+  const value = String(company.basePath || "").trim();
+  if (!value || value === "/") {
+    return "";
+  }
+  return `/${value.replace(/^\/+|\/+$/g, "")}`;
+}
+
+function publicPath(value) {
+  const pathname = value === "/" ? "/" : `/${String(value || "").replace(/^\/+/, "")}`;
+  return `${siteBasePath()}${pathname}`;
+}
+
 function siteOrigin() {
   return String(company.baseUrl || "").replace(/\/+$/, "");
 }
 
 function canonicalUrl(file) {
-  return `${siteOrigin()}${routePath(file)}`;
+  return `${siteOrigin()}${publicPath(routePath(file))}`;
 }
 
 function pageHref(value) {
@@ -111,7 +124,7 @@ function pageHref(value) {
     return value;
   }
   const [file, hash] = value.split("#");
-  const href = routePath(file);
+  const href = publicPath(routePath(file));
   return hash ? `${href}#${hash}` : href;
 }
 
@@ -119,7 +132,7 @@ function sitePath(value) {
   if (!value || /^(https?:|mailto:|tel:|#)/i.test(value)) {
     return value;
   }
-  return `/${value.replace(/^\/+/, "")}`;
+  return publicPath(`/${value.replace(/^\/+/, "")}`);
 }
 
 function outputPath(file) {
@@ -1562,7 +1575,7 @@ function sitemap() {
   ];
 
   const origin = siteOrigin();
-  const loc = (file) => `${origin}${routePath(file)}`;
+  const loc = (file) => `${origin}${publicPath(routePath(file))}`;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -1576,7 +1589,7 @@ ${pages
 function robots() {
   return `User-agent: *
 Allow: /
-${siteOrigin() ? `\nSitemap: ${siteOrigin()}/sitemap.xml` : ""}
+${siteOrigin() || siteBasePath() ? `\nSitemap: ${siteOrigin()}${publicPath("/sitemap.xml")}` : ""}
 `;
 }
 
