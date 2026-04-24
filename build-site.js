@@ -14,6 +14,8 @@ const {
 const outDir = __dirname;
 const serviceFile = (service) => `${service.slug}.html`;
 const articleFile = (article) => `${article.slug}.html`;
+const ARTICLES_PER_PAGE = 6;
+const articleListingPageFile = (page) => (page <= 1 ? "article.html" : `article-page-${page}.html`);
 const assetImage = "images/banner.jpg";
 const defaultKeywords = [
   "ремонт бытовой техники в Туле",
@@ -93,6 +95,10 @@ function isArticlePageFile(file) {
   return file.endsWith(".html") && articles.some((article) => articleFile(article) === file);
 }
 
+function isArticleListingPageFile(file) {
+  return file === "article.html" || /^article-page-\d+\.html$/.test(file);
+}
+
 function routePath(file) {
   if (file === "index.html") {
     return "/";
@@ -102,6 +108,9 @@ function routePath(file) {
   }
   if (file === "article.html") {
     return "/articles/";
+  }
+  if (/^article-page-\d+\.html$/.test(file)) {
+    return `/articles/page/${file.match(/\d+/)[0]}/`;
   }
   if (isServicePageFile(file)) {
     return `/services/${file.replace(/\.html$/, "")}/`;
@@ -158,6 +167,9 @@ function outputPath(file) {
   }
   if (file === "article.html") {
     return "articles/index.html";
+  }
+  if (/^article-page-\d+\.html$/.test(file)) {
+    return `articles/page/${file.match(/\d+/)[0]}/index.html`;
   }
   if (isServicePageFile(file)) {
     return `services/${file.replace(/\.html$/, "")}/index.html`;
@@ -1179,6 +1191,36 @@ ${list
 </div>`;
 }
 
+function articlePagination(page, totalPages) {
+  if (totalPages <= 1) {
+    return "";
+  }
+
+  const prev = page > 1
+    ? `<a class="pagination-previous" href="${pageHref(articleListingPageFile(page - 1))}">Назад</a>`
+    : `<span class="pagination-previous is-disabled" aria-disabled="true">Назад</span>`;
+
+  const next = page < totalPages
+    ? `<a class="pagination-next" href="${pageHref(articleListingPageFile(page + 1))}">Вперед</a>`
+    : `<span class="pagination-next is-disabled" aria-disabled="true">Вперед</span>`;
+
+  const links = Array.from({ length: totalPages }, (_, index) => {
+    const currentPage = index + 1;
+    const currentClass = currentPage === page ? " is-current" : "";
+    const currentAttr = currentPage === page ? ' aria-current="page"' : "";
+    return `<a class="pagination-link${currentClass}" href="${pageHref(articleListingPageFile(currentPage))}"${currentAttr}>${currentPage}</a>`;
+  }).join("\n");
+
+  return `
+<nav class="articles-pagination" aria-label="Пагинация статей">
+  ${prev}
+  <div class="articles-pagination-links">
+    ${links}
+  </div>
+  ${next}
+</nav>`;
+}
+
 function serviceArticlesBlock(service) {
   const items = relatedArticles(service, 6);
   if (!items.length) {
@@ -1222,7 +1264,12 @@ function mapRatingsBlock() {
 </section>`;
 }
 
-function renderArticles() {
+function renderArticles(page = 1) {
+  const totalPages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
+  const currentPage = Math.min(Math.max(page, 1), totalPages);
+  const offset = (currentPage - 1) * ARTICLES_PER_PAGE;
+  const pageArticles = articles.slice(offset, offset + ARTICLES_PER_PAGE);
+  const file = articleListingPageFile(currentPage);
   const body = `
 ${hero({
   h1: "Статьи о ремонте бытовой техники в Туле",
@@ -1234,20 +1281,24 @@ ${hero({
 <section class="section">
   <div class="container">
 ${sectionHeader("Все статьи", "Материалы помогают понять симптомы неисправностей, ориентиры стоимости, диагностику и порядок вызова мастера в Туле.")}
-${articleCards()}
+${articleCards(pageArticles)}
+${articlePagination(currentPage, totalPages)}
   </div>
 </section>
 ${contactCta("Нужна консультация по ремонту техники?")}`;
 
   return layout({
-    file: "article.html",
+    file,
     activeFile: "article.html",
-    title: "Статьи о ремонте бытовой техники в Туле | Remtehcom",
-    description: "102 полезные статьи Remtehcom о ремонте бытовой техники в Туле: холодильники, стиральные машины, телевизоры, кондиционеры, цены и диагностика.",
+    title: currentPage === 1 ? "Статьи о ремонте бытовой техники в Туле | Remtehcom" : `Статьи о ремонте бытовой техники в Туле - страница ${currentPage} | Remtehcom`,
+    description: currentPage === 1
+      ? "102 полезные статьи Remtehcom о ремонте бытовой техники в Туле: холодильники, стиральные машины, телевизоры, кондиционеры, цены и диагностика."
+      : `Подборка статей Remtehcom о ремонте бытовой техники в Туле - страница ${currentPage}. Симптомы неисправностей, диагностика, цены и советы мастера.`,
     keywords: ["статьи ремонт бытовой техники Тула", "ремонт техники советы", "ремонт холодильников статьи", "ремонт стиральных машин статьи", "мастер по ремонту техники Тула"],
     breadcrumbs: [
       { name: "Главная", file: "index.html" },
-      { name: "Статьи", file: "article.html" }
+      { name: "Статьи", file: "article.html" },
+      ...(currentPage > 1 ? [{ name: `Страница ${currentPage}`, file }] : [])
     ],
     body
   });
@@ -1591,11 +1642,15 @@ function renderLegacy(file, target, title) {
 }
 
 function sitemap() {
+  const articleListingPages = Array.from(
+    { length: Math.ceil(articles.length / ARTICLES_PER_PAGE) },
+    (_, index) => articleListingPageFile(index + 1)
+  );
   const pages = [
     "index.html",
     "about.html",
     "services.html",
-    "article.html",
+    ...articleListingPages,
     "prices.html",
     "reviews.html",
     "faq.html",
@@ -1682,7 +1737,13 @@ function build() {
   write("index.html", renderHome());
   write("about.html", renderAbout());
   write("services.html", renderServices());
-  write("article.html", renderArticles());
+  const articleListingPages = Array.from(
+    { length: Math.ceil(articles.length / ARTICLES_PER_PAGE) },
+    (_, index) => index + 1
+  );
+  articleListingPages.forEach((page) => {
+    write(articleListingPageFile(page), renderArticles(page));
+  });
   write("prices.html", renderPrices());
   write("reviews.html", renderReviews());
   write("faq.html", renderFaqPage());
@@ -1701,7 +1762,7 @@ function build() {
   const legacyFiles = [
     "about.html",
     "services.html",
-    "article.html",
+    ...articleListingPages.map(articleListingPageFile),
     "prices.html",
     "reviews.html",
     "faq.html",
