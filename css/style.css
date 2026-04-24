@@ -1396,7 +1396,11 @@ body {
 .price-card,
 .contact-card,
 .request-form,
-.side-panel {
+.side-panel,
+.cluster-card,
+.service-knowledge-card,
+.coverage-card,
+.link-hub-card {
   border: 1px solid var(--rt-line);
   border-radius: 8px;
   background: #fff;
@@ -1550,7 +1554,11 @@ body {
 .price-card,
 .contact-card,
 .request-form,
-.side-panel {
+.side-panel,
+.cluster-card,
+.service-knowledge-card,
+.coverage-card,
+.link-hub-card {
   padding: 28px;
 }
 
@@ -1736,6 +1744,84 @@ body {
 .rating-count {
   margin-bottom: 12px;
   font-weight: 700;
+}
+
+.cluster-card,
+.service-knowledge-card,
+.coverage-card,
+.link-hub-card {
+  min-height: 100%;
+}
+
+.cluster-count {
+  display: inline-flex;
+  margin-bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(218, 43, 60, 0.08);
+  color: var(--rt-red);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.cluster-card h3,
+.service-knowledge-card h3,
+.coverage-card h3,
+.link-hub-card h3 {
+  font-size: 21px;
+  margin-bottom: 12px;
+}
+
+.cluster-card p,
+.service-knowledge-card p,
+.coverage-card p,
+.link-hub-card p {
+  color: var(--rt-muted);
+}
+
+.cluster-list,
+.service-link-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cluster-list li,
+.service-link-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rt-line);
+}
+
+.cluster-list a,
+.service-link-list a,
+.link-hub-card h3 a {
+  color: var(--rt-red);
+  font-weight: 700;
+}
+
+.brand-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.brand-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--rt-line);
+  border-radius: 999px;
+  background: var(--rt-soft);
+  color: var(--rt-ink);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.feature-tile-compact h3 {
+  font-size: 19px;
 }
 
 .semantic-card {

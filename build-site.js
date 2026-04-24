@@ -70,6 +70,108 @@ const navItems = [
   ["contact.html", "Контакты"]
 ];
 
+const generatedAt = new Date().toISOString();
+const generatedDate = generatedAt.slice(0, 10);
+const serviceDistricts = [
+  "Советский район",
+  "Центральный район",
+  "Пролетарский район",
+  "Зареченский район",
+  "Привокзальный район"
+];
+const regionalCities = [
+  "Новомосковск",
+  "Щёкино",
+  "Узловая",
+  "Донской",
+  "Алексин",
+  "Киреевск"
+];
+const siteSupportLinks = [
+  {
+    title: "Цены на ремонт",
+    text: "Сравните ориентировочные расценки по видам техники и типовым работам.",
+    href: "prices.html"
+  },
+  {
+    title: "Отзывы клиентов",
+    text: "Посмотрите, как проходит диагностика, согласование стоимости и гарантийное обслуживание.",
+    href: "reviews.html"
+  },
+  {
+    title: "FAQ по ремонту",
+    text: "Собрали ответы о сроках, выезде, диагностике, гарантии и порядке оплаты.",
+    href: "faq.html"
+  },
+  {
+    title: "Контакты и заявка",
+    text: "Оставьте заявку онлайн или сразу свяжитесь с сервисным центром Remtehcom.",
+    href: "contact.html#request"
+  }
+];
+const serviceBrandCatalog = {
+  "remont-holodilnikov-tula": ["Atlant", "Indesit", "LG", "Samsung", "Bosch", "Beko", "Haier", "Stinol"],
+  "remont-stiralnyh-mashin-tula": ["LG", "Samsung", "Bosch", "Indesit", "Beko", "Hotpoint-Ariston", "Candy", "Electrolux"],
+  "remont-posudomoechnyh-mashin-tula": ["Bosch", "Electrolux", "Beko", "Hotpoint-Ariston", "Siemens", "Hansa", "Midea", "Weissgauff"],
+  "remont-televizorov-tula": ["Samsung", "LG", "Sony", "Philips", "Xiaomi", "TCL", "BBK", "Haier"],
+  "remont-mikrovolnovok-tula": ["Samsung", "LG", "Panasonic", "Daewoo", "Midea", "BBK", "Horizont", "Supra"],
+  "remont-kondicionerov-tula": ["Ballu", "Electrolux", "Hisense", "Haier", "Midea", "Kentatsu", "Toshiba", "LG"],
+  "remont-elektroplit-tula": ["Gefest", "Hansa", "Darina", "Gorenje", "Electrolux", "Beko", "Indesit", "Bosch"],
+  "remont-duhovyh-shkafov-tula": ["Bosch", "Electrolux", "Gorenje", "Hansa", "Hotpoint-Ariston", "Beko", "Korting", "Samsung"],
+  "remont-varochnyh-paneley-tula": ["Bosch", "Electrolux", "Hansa", "Gorenje", "Hotpoint-Ariston", "Beko", "Kuppersberg", "Maunfeld"],
+  "remont-kofemashin-tula": ["DeLonghi", "Philips", "Saeco", "Krups", "Jura", "Nivona", "Melitta", "Bosch"],
+  "remont-pylesosov-tula": ["Dyson", "Samsung", "LG", "Philips", "Thomas", "Bosch", "Xiaomi", "Tefal"],
+  "remont-melkoy-bytovoy-tehniki-tula": ["Braun", "Philips", "Tefal", "Redmond", "Polaris", "Moulinex", "Kitfort", "Bosch"]
+};
+const articleTopicMeta = {
+  "ne-vklyuchaetsya": {
+    label: "Не включается",
+    clusterTitle: "Материалы по запуску и питанию",
+    clusterLead: "Статьи о случаях, когда техника не реагирует на кнопку питания, отключается сразу после запуска или выбивает автомат."
+  },
+  "oshibka": {
+    label: "Показывает ошибку",
+    clusterTitle: "Материалы по кодам ошибок",
+    clusterLead: "Разбираем ошибки на дисплее, остановку программ и типовые причины сбоев модулей и датчиков."
+  },
+  "shumit": {
+    label: "Шумит",
+    clusterTitle: "Материалы по шуму и вибрации",
+    clusterLead: "Подборка статей о гуле, вибрации, стуке, треске и других посторонних звуках во время работы техники."
+  },
+  "techet": {
+    label: "Течёт",
+    clusterTitle: "Материалы по протечкам",
+    clusterLead: "Статьи о протечках, влаге в корпусе, нарушении герметичности и неисправностях сливной системы."
+  },
+  "diagnostika": {
+    label: "Диагностика",
+    clusterTitle: "Материалы по диагностике",
+    clusterLead: "Рассказываем, что проверяет мастер, почему нельзя менять детали наугад и как формируется смета."
+  },
+  "stoimost": {
+    label: "Стоимость ремонта",
+    clusterTitle: "Материалы по цене и смете",
+    clusterLead: "Полезные материалы о том, из чего складывается стоимость ремонта и почему цена до диагностики бывает только ориентировочной."
+  },
+  "srochno": {
+    label: "Срочный ремонт",
+    clusterTitle: "Материалы по срочным заявкам",
+    clusterLead: "Подборка о ситуациях, когда неисправность лучше не откладывать, и как быстро согласовать выезд мастера."
+  },
+  "garantiya": {
+    label: "Гарантия",
+    clusterTitle: "Материалы по гарантии",
+    clusterLead: "Статьи о гарантийных условиях, проверке техники после ремонта и том, какие работы фиксируются документально."
+  }
+};
+const generalArticlesClusterMeta = {
+  key: "commercial-guides",
+  label: "Цены, диагностика и выбор мастера",
+  clusterTitle: "Коммерческие статьи и практические гиды",
+  clusterLead: "Материалы о выборе мастера, диагностике, выезде по Туле и Тульской области, срочных заявках и ориентировочных ценах."
+};
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -192,16 +294,116 @@ function scriptJson(data) {
   return `<script type="application/ld+json">${JSON.stringify(data, null, 2).replace(/</g, "\\u003c")}</script>`;
 }
 
+function localBusinessId() {
+  return `${canonicalUrl("contact.html")}#localbusiness`;
+}
+
+function serviceBrands(service) {
+  return serviceBrandCatalog[service.slug] || ["Samsung", "LG", "Bosch", "Electrolux", "Beko", "Philips"];
+}
+
+function extractMinPrice(value) {
+  const match = String(value || "").match(/(\d[\d\s]*)/);
+  return match ? Number(match[1].replace(/\s+/g, "")) : null;
+}
+
+function serviceMinPrice(service) {
+  return service.priceRows
+    .map(([, price]) => extractMinPrice(price))
+    .filter((price) => Number.isFinite(price) && price > 0)
+    .sort((left, right) => left - right)[0] || null;
+}
+
+function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${canonicalUrl("index.html")}#website`,
+    name: company.legalName,
+    alternateName: company.name,
+    description: "Сайт сервисного центра Remtehcom по ремонту бытовой техники в Туле и Тульской области.",
+    url: canonicalUrl("index.html"),
+    inLanguage: "ru-RU",
+    publisher: { "@id": localBusinessId() }
+  };
+}
+
+function pageSchema({ file, name, description, type = "WebPage" }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    name,
+    description,
+    url: canonicalUrl(file),
+    inLanguage: "ru-RU",
+    dateModified: generatedDate,
+    isPartOf: { "@id": `${canonicalUrl("index.html")}#website` },
+    about: { "@id": localBusinessId() }
+  };
+}
+
+function itemListSchema(name, items) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    numberOfItems: items.length,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: canonicalUrl(item.file)
+    }))
+  };
+}
+
+function offerCatalogSchema(service) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    name: `Работы по услуге «${service.name}»`,
+    itemListElement: service.priceRows.slice(0, 6).map(([name, price]) => {
+      const minPrice = extractMinPrice(price);
+      const offer = {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name
+        },
+        priceCurrency: "RUB",
+        availability: "https://schema.org/InStock",
+        description: price
+      };
+
+      if (minPrice) {
+        offer.priceSpecification = {
+          "@type": "PriceSpecification",
+          priceCurrency: "RUB",
+          minPrice
+        };
+      }
+
+      return offer;
+    })
+  };
+}
+
 function localBusinessSchema() {
-  const origin = siteOrigin();
+  const sameAs = Array.from(new Set([...(siteOrigin() ? [canonicalUrl("index.html")] : []), ...mapRatings.map((item) => item.url)]));
   const schema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": localBusinessId(),
     name: company.legalName,
+    alternateName: company.name,
+    description: "Сервисный центр Remtehcom: ремонт бытовой техники в Туле и Тульской области, диагностика, согласование стоимости и гарантия на работы.",
     image: absoluteImageUrl(assetImage),
+    url: canonicalUrl("index.html"),
     telephone: [company.phone, company.mobile],
     email: company.email,
     priceRange: "от 400 руб.",
+    currenciesAccepted: "RUB",
+    paymentAccepted: "Наличные, банковский перевод",
     address: {
       "@type": "PostalAddress",
       streetAddress: company.streetAddress,
@@ -214,16 +416,46 @@ function localBusinessSchema() {
       latitude: company.coordinates.latitude,
       longitude: company.coordinates.longitude
     },
+    hasMap: company.mapUrl,
     openingHours: "Mo-Sa 09:00-20:00",
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "https://schema.org/Monday",
+          "https://schema.org/Tuesday",
+          "https://schema.org/Wednesday",
+          "https://schema.org/Thursday",
+          "https://schema.org/Friday",
+          "https://schema.org/Saturday"
+        ],
+        opens: "09:00",
+        closes: "20:00"
+      }
+    ],
     areaServed: [
       { "@type": "City", name: company.city },
       { "@type": "AdministrativeArea", name: company.region }
-    ]
+    ],
+    serviceArea: [
+      { "@type": "City", name: company.city },
+      { "@type": "AdministrativeArea", name: company.region }
+    ],
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        telephone: company.phone,
+        email: company.email,
+        availableLanguage: ["ru-RU"],
+        areaServed: [company.city, company.region]
+      }
+    ],
+    knowsAbout: services.map((service) => service.name)
   };
 
-  if (origin) {
-    schema.url = origin;
-    schema.sameAs = [origin];
+  if (sameAs.length) {
+    schema.sameAs = sameAs;
   }
 
   return schema;
@@ -258,34 +490,50 @@ function faqSchema(faq) {
 }
 
 function serviceSchema(service) {
+  const minPrice = serviceMinPrice(service);
+  const offer = {
+    "@type": "Offer",
+    priceCurrency: "RUB",
+    availability: "https://schema.org/InStock",
+    url: canonicalUrl(serviceFile(service))
+  };
+
+  if (minPrice) {
+    offer.priceSpecification = {
+      "@type": "PriceSpecification",
+      priceCurrency: "RUB",
+      minPrice
+    };
+  }
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${canonicalUrl(serviceFile(service))}#service`,
     name: `${service.name} в Туле`,
+    serviceType: service.name,
+    category: "Ремонт бытовой техники",
     description: service.description,
+    url: canonicalUrl(serviceFile(service)),
     image: absoluteImageUrl(service.image),
-    provider: {
-      "@type": "LocalBusiness",
-      name: company.legalName,
-      telephone: company.phone,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: company.streetAddress,
-        addressLocality: company.city,
-        addressRegion: company.region,
-        addressCountry: "RU"
-      }
-    },
+    mainEntityOfPage: canonicalUrl(serviceFile(service)),
+    provider: { "@id": localBusinessId() },
     areaServed: [
       { "@type": "City", name: company.city },
       { "@type": "AdministrativeArea", name: company.region }
     ],
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "RUB",
-      availability: "https://schema.org/InStock",
-      url: canonicalUrl(serviceFile(service))
-    }
+    brand: serviceBrands(service).map((name) => ({
+      "@type": "Brand",
+      name
+    })),
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: canonicalUrl(serviceFile(service)),
+      servicePhone: company.phone,
+      availableLanguage: ["ru-RU"]
+    },
+    offers: offer,
+    hasOfferCatalog: offerCatalogSchema(service)
   };
 }
 
@@ -294,9 +542,19 @@ function articleSchema(article) {
   return {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${canonicalUrl(articleFile(article))}#article`,
     headline: article.h1,
     description: article.description,
     image: absoluteImageUrl(article.image),
+    url: canonicalUrl(articleFile(article)),
+    inLanguage: "ru-RU",
+    datePublished: generatedDate,
+    dateModified: generatedDate,
+    articleSection: article.clusterTitle || article.service.name,
+    about: [
+      { "@type": "Thing", name: article.service.name },
+      { "@type": "Place", name: `${company.city}, ${company.region}` }
+    ],
     author: {
       "@type": "Organization",
       name: company.legalName
@@ -309,7 +567,12 @@ function articleSchema(article) {
         url: `${origin}${sitePath("images/logo.png")}`
       }
     },
-    mainEntityOfPage: canonicalUrl(articleFile(article))
+    mainEntityOfPage: canonicalUrl(articleFile(article)),
+    isPartOf: {
+      "@type": "CollectionPage",
+      name: "Статьи о ремонте бытовой техники в Туле",
+      url: canonicalUrl("article.html")
+    }
   };
 }
 
@@ -369,7 +632,7 @@ function footer() {
           <span class="brand-mark">R</span>
           <span><strong>Remtehcom</strong><small>сервисный центр в Туле</small></span>
         </a>
-        <p>Ремонт бытовой техники на дому и в сервисной зоне. Работаем по Туле и согласовываем выезд по Тульской области.</p>
+        <p>Ремонт бытовой техники с выездом мастера и в сервисной зоне. Работаем по Туле и согласовываем выезд по Тульской области.</p>
       </div>
       <div class="column is-4-desktop is-6-tablet">
         <h2 class="footer-title h5">Популярные услуги</h2>
@@ -417,10 +680,28 @@ function breadcrumbsHtml(items) {
 </nav>`;
 }
 
-function layout({ file, activeFile = file, title, description, keywords = defaultKeywords, image = assetImage, body, breadcrumbs, faq = [], schemas = [], noindex = false }) {
+function layout({
+  file,
+  activeFile = file,
+  title,
+  description,
+  keywords = defaultKeywords,
+  image = assetImage,
+  body,
+  breadcrumbs,
+  faq = [],
+  schemas = [],
+  noindex = false,
+  ogType = "website",
+  publishedTime = "",
+  modifiedTime = "",
+  prevFile = "",
+  nextFile = ""
+}) {
   const url = canonicalUrl(file);
   const pageImage = image || assetImage;
   const schemaBlocks = [
+    websiteSchema(),
     localBusinessSchema(),
     breadcrumbsSchema(breadcrumbs || [{ name: "Главная", file: "index.html" }]),
     ...schemas
@@ -438,14 +719,24 @@ function layout({ file, activeFile = file, title, description, keywords = defaul
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${attr(description)}">
   <meta name="keywords" content="${attr(keywordsContent(keywords))}">
-  ${noindex ? '<meta name="robots" content="noindex, follow">' : ""}
+  ${noindex ? '<meta name="robots" content="noindex, follow">' : '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">'}
   <link rel="canonical" href="${attr(url)}">
-  <meta property="og:type" content="website">
+  ${prevFile ? `<link rel="prev" href="${attr(canonicalUrl(prevFile))}">` : ""}
+  ${nextFile ? `<link rel="next" href="${attr(canonicalUrl(nextFile))}">` : ""}
+  <meta property="og:type" content="${attr(ogType)}">
+  <meta property="og:site_name" content="${attr(company.legalName)}">
   <meta property="og:title" content="${attr(title)}">
   <meta property="og:description" content="${attr(description)}">
   <meta property="og:url" content="${attr(url)}">
   <meta property="og:image" content="${attr(absoluteImageUrl(pageImage))}">
   <meta property="og:locale" content="ru_RU">
+  ${publishedTime ? `<meta property="article:published_time" content="${attr(publishedTime)}">` : ""}
+  ${modifiedTime ? `<meta property="article:modified_time" content="${attr(modifiedTime)}">` : ""}
+  ${modifiedTime ? `<meta property="og:updated_time" content="${attr(modifiedTime)}">` : ""}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${attr(title)}">
+  <meta name="twitter:description" content="${attr(description)}">
+  <meta name="twitter:image" content="${attr(absoluteImageUrl(pageImage))}">
   <meta name="theme-name" content="remtehcom-service-site">
   <link rel="stylesheet" href="${sitePath("plugins/bulma/bulma.min.css")}">
   <link rel="stylesheet" href="${sitePath("plugins/themify-icons/themify-icons.css")}">
@@ -496,7 +787,7 @@ function hero({ h1, lead, kicker = "Сервисный центр в Туле", 
         </div>
         <ul class="hero-badges">
           <li>Тула и область</li>
-          <li>Ремонт на дому</li>
+          <li>С выездом мастера</li>
           <li>Гарантия</li>
           <li>Стоимость до начала работ</li>
         </ul>
@@ -784,17 +1075,26 @@ function articleSections(service, topic) {
 
 function buildArticles() {
   const serviceArticles = services.flatMap((service) =>
-    articleTopics.map((topic) => ({
-      slug: `${service.slug}-${topic.key}`,
-      title: `${service.name} в Туле: ${topic.suffix} | Remtehcom`,
-      description: `${service.name} в Туле: ${topic.suffix}. Причины, диагностика, стоимость, вызов мастера Remtehcom и ремонт с гарантией.`,
-      keywords: articleKeywords(service, topic),
-      h1: `${service.name} в Туле: ${topic.suffix}`,
-      lead: articleIntro(service, topic),
-      image: service.image || assetImage,
-      service,
-      sections: articleSections(service, topic)
-    }))
+    articleTopics.map((topic) => {
+      const cluster = articleTopicMeta[topic.key] || {};
+      return {
+        slug: `${service.slug}-${topic.key}`,
+        title: `${service.name} в Туле: ${topic.suffix} | Remtehcom`,
+        description: `${service.name} в Туле: ${topic.suffix}. Причины, диагностика, стоимость, вызов мастера Remtehcom и ремонт с гарантией.`,
+        keywords: articleKeywords(service, topic),
+        h1: `${service.name} в Туле: ${topic.suffix}`,
+        lead: articleIntro(service, topic),
+        image: service.image || assetImage,
+        service,
+        topicKey: topic.key,
+        clusterKey: topic.key,
+        clusterLabel: cluster.label || topic.key,
+        clusterTitle: cluster.clusterTitle || service.name,
+        clusterLead: cluster.clusterLead || service.lead,
+        isGeneral: false,
+        sections: articleSections(service, topic)
+      };
+    })
   );
 
   return [
@@ -802,12 +1102,238 @@ function buildArticles() {
     ...generalArticleIdeas.map((article) => ({
       ...article,
       image: assetImage,
-      service: services[0]
+      service: services[0],
+      topicKey: generalArticlesClusterMeta.key,
+      clusterKey: generalArticlesClusterMeta.key,
+      clusterLabel: generalArticlesClusterMeta.label,
+      clusterTitle: generalArticlesClusterMeta.clusterTitle,
+      clusterLead: generalArticlesClusterMeta.clusterLead,
+      isGeneral: true
     }))
   ];
 }
 
 const articles = buildArticles();
+
+function groupedArticleClusters() {
+  const symptomClusters = Object.entries(articleTopicMeta).map(([key, meta]) => ({
+    key,
+    title: meta.clusterTitle,
+    lead: meta.clusterLead,
+    label: meta.label,
+    items: articles.filter((article) => article.clusterKey === key)
+  }));
+  const commercialCluster = {
+    key: generalArticlesClusterMeta.key,
+    title: generalArticlesClusterMeta.clusterTitle,
+    lead: generalArticlesClusterMeta.clusterLead,
+    label: generalArticlesClusterMeta.label,
+    items: articles.filter((article) => article.clusterKey === generalArticlesClusterMeta.key)
+  };
+
+  return [...symptomClusters, commercialCluster].filter((cluster) => cluster.items.length);
+}
+
+function articleClustersBlock() {
+  const clusters = groupedArticleClusters();
+  return `
+<section class="section soft-section">
+  <div class="container">
+    ${sectionHeader("Кластеры статей по ремонту техники", "Разделили статьи по симптомам, диагностике, стоимости, срочным заявкам и гарантийным вопросам, чтобы пользователь быстрее находил нужный сценарий обращения.")}
+    <div class="columns is-multiline">
+      ${clusters
+        .map(
+          (cluster) => `
+      <div class="column is-6-desktop">
+        <article class="cluster-card match-height">
+          <span class="cluster-count">${cluster.items.length} статей</span>
+          <h3>${escapeHtml(cluster.title)}</h3>
+          <p>${escapeHtml(cluster.lead)}</p>
+          <ul class="cluster-list">
+            ${cluster.items
+              .slice(0, 4)
+              .map((article) => `<li><a href="${pageHref(articleFile(article))}">${escapeHtml(article.h1)}</a></li>`)
+              .join("\n")}
+          </ul>
+        </article>
+      </div>`
+        )
+        .join("\n")}
+    </div>
+  </div>
+</section>`;
+}
+
+function serviceCommercialSignals(service) {
+  const minPrice = serviceMinPrice(service);
+  const priceText = minPrice ? `от ${minPrice.toLocaleString("ru-RU")} руб.` : "после диагностики";
+  const brandList = serviceBrands(service).slice(0, 4).join(", ");
+  return [
+    {
+      title: "Диагностика и смета до начала ремонта",
+      text: `По ${service.short.toLowerCase()} сначала определяем точную причину поломки и только потом согласовываем стоимость работ и комплектующих.`
+    },
+    {
+      title: "Ориентир по цене без скрытых доплат",
+      text: `Базовые работы по этой услуге начинаются ${priceText}. Итоговая сумма зависит от модели, доступа к узлам и необходимости замены деталей.`
+    },
+    {
+      title: "Гарантия на работы и установленные детали",
+      text: "После ремонта проверяем технику в рабочем режиме, выдаём гарантию и остаёмся на связи по повторным вопросам."
+    },
+    {
+      title: "Выезд по Туле и согласование области",
+      text: "Принимаем заявки по районам Тулы, а выезд по Тульской области отдельно согласовываем по времени и логистике."
+    },
+    {
+      title: "Работаем с популярными брендами",
+      text: `Чаще всего обслуживаем ${brandList} и другие распространённые марки бытовой техники.`
+    },
+    {
+      title: "Оплата после согласования работ",
+      text: "Клиент заранее понимает перечень работ, ориентир по сроку и стоимости, а к ремонту приступаем только после подтверждения."
+    }
+  ];
+}
+
+function serviceCommercialBlock(service) {
+  const items = serviceCommercialSignals(service);
+  return `
+<section class="section soft-section">
+  <div class="container">
+    ${sectionHeader("Коммерческие условия и гарантии", "Закрываем не только симптом поломки, но и вопросы стоимости, сроков, гарантии, выезда мастера и обслуживания популярных брендов.")}
+    <div class="columns is-multiline">
+      ${items
+        .map(
+          (item) => `
+      <div class="column is-4-desktop is-6-tablet">
+        <article class="feature-tile match-height feature-tile-compact">
+          <h3>${escapeHtml(item.title)}</h3>
+          <p>${escapeHtml(item.text)}</p>
+        </article>
+      </div>`
+        )
+        .join("\n")}
+    </div>
+  </div>
+</section>`;
+}
+
+function serviceKnowledgeBlock(service) {
+  const serviceArticles = relatedArticles(service, 12);
+  const symptomKeys = new Set(["ne-vklyuchaetsya", "oshibka", "shumit", "techet"]);
+  const symptomArticles = serviceArticles.filter((article) => symptomKeys.has(article.topicKey)).slice(0, 4);
+  const commercialArticles = serviceArticles.filter((article) => !symptomKeys.has(article.topicKey)).slice(0, 4);
+
+  if (!symptomArticles.length && !commercialArticles.length) {
+    return "";
+  }
+
+  return `
+<section class="section">
+  <div class="container">
+    ${sectionHeader(`Симптомы и полезные материалы по услуге «${service.short}»`, "Собрали ссылки на статьи по типовым симптомам, диагностике, стоимости и гарантии, чтобы посадочная страница закрывала и коммерческий, и информационный интент.")}
+    <div class="columns is-multiline">
+      <div class="column is-6-desktop">
+        <article class="service-knowledge-card match-height">
+          <h3>Симптомы и частые жалобы</h3>
+          <ul class="service-link-list">
+            ${symptomArticles
+              .map((article) => `<li><a href="${pageHref(articleFile(article))}">${escapeHtml(article.h1)}</a></li>`)
+              .join("\n")}
+          </ul>
+        </article>
+      </div>
+      <div class="column is-6-desktop">
+        <article class="service-knowledge-card match-height">
+          <h3>Диагностика, цена и гарантия</h3>
+          <ul class="service-link-list">
+            ${commercialArticles
+              .map((article) => `<li><a href="${pageHref(articleFile(article))}">${escapeHtml(article.h1)}</a></li>`)
+              .join("\n")}
+          </ul>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
+function serviceCoverageBlock(service) {
+  return `
+<section class="section">
+  <div class="container">
+    ${sectionHeader("Районы выезда и популярные бренды", "Дополнительные локальные и коммерческие сигналы помогают закрывать поиск по Туле и Тульской области и поддерживают релевантность услуги по брендам техники.")}
+    <div class="columns is-multiline">
+      <div class="column is-6-desktop">
+        <article class="coverage-card match-height">
+          <h3>Работаем по Туле и области</h3>
+          <p>Чаще всего принимаем заявки из районов Тулы и ближайших городов области. По удалённым адресам время и условия выезда согласовываем отдельно.</p>
+          <ul class="service-link-list">
+            ${serviceDistricts.map((district) => `<li>${escapeHtml(district)}</li>`).join("\n")}
+            ${regionalCities.map((city) => `<li>${escapeHtml(city)}</li>`).join("\n")}
+          </ul>
+        </article>
+      </div>
+      <div class="column is-6-desktop">
+        <article class="coverage-card match-height">
+          <h3>Часто обслуживаем бренды</h3>
+          <p>Подбираем решение под модель, поколение техники и доступность комплектующих. Ниже перечислены марки, по которым чаще всего поступают заявки.</p>
+          <div class="brand-chip-list">
+            ${serviceBrands(service).map((brand) => `<span class="brand-chip">${escapeHtml(brand)}</span>`).join("\n")}
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
+function linkHubBlock(title, text, links) {
+  return `
+<section class="section soft-section">
+  <div class="container">
+    ${sectionHeader(title, text)}
+    <div class="columns is-multiline">
+      ${links
+        .map(
+          (item) => `
+      <div class="column is-6-desktop">
+        <article class="link-hub-card match-height">
+          <h3><a href="${pageHref(item.href)}">${escapeHtml(item.title)}</a></h3>
+          <p>${escapeHtml(item.text)}</p>
+          <a href="${pageHref(item.href)}" class="card-link">Перейти в раздел</a>
+        </article>
+      </div>`
+        )
+        .join("\n")}
+    </div>
+  </div>
+</section>`;
+}
+
+function serviceLinkHub(service) {
+  const relatedLinks = relatedServices(service).slice(0, 4).map((item) => ({
+    title: item.name,
+    text: item.lead,
+    href: serviceFile(item)
+  }));
+  return linkHubBlock(
+    "Полезные разделы и смежные услуги",
+    "С этих разделов удобно уходить в цены, отзывы, общий FAQ, форму заявки и смежные услуги, которые часто ищут вместе с текущей страницей.",
+    [...siteSupportLinks, ...relatedLinks]
+  );
+}
+
+function articleSymptomCluster(article) {
+  if (!article.topicKey || article.isGeneral) {
+    return [];
+  }
+
+  return articles
+    .filter((item) => item.slug !== article.slug && item.topicKey === article.topicKey)
+    .slice(0, 5);
+}
 
 function benefitsBlock(title = "Почему выбирают Remtehcom") {
   return `
@@ -1014,7 +1540,7 @@ ${hero({
 })}
 <section class="section">
   <div class="container">
-    ${sectionHeader("Услуги по ремонту техники", "Подберите нужную услугу и узнайте, какие неисправности мы устраняем на дому в Туле и Тульской области.")}
+    ${sectionHeader("Услуги по ремонту техники", "Подберите нужную услугу и узнайте, какие неисправности мы устраняем в Туле и Тульской области.")}
     ${serviceCards()}
   </div>
 </section>
@@ -1046,10 +1572,22 @@ ${contactCta()}`;
 
   return layout({
     file: "index.html",
-    title: "Ремонт бытовой техники в Туле | Мастер на дом Remtehcom",
-    description: "Ремонт бытовой техники в Туле и Тульской области: холодильники, стиральные машины, посудомойки, телевизоры, микроволновки, кондиционеры. Вызов мастера, гарантия.",
+    title: "Ремонт бытовой техники в Туле | Мастер Remtehcom",
+    description: "Ремонт бытовой техники в Туле и Тульской области: холодильники, стиральные машины, посудомойки, телевизоры, микроволновки, кондиционеры. Вызов мастера, гарантия и понятная стоимость.",
     breadcrumbs: [{ name: "Главная", file: "index.html" }],
     faq: homeFaq,
+    schemas: [
+      pageSchema({
+        file: "index.html",
+        name: "Ремонт бытовой техники в Туле",
+        description: "Главная страница Remtehcom: ремонт бытовой техники в Туле и Тульской области, цены, отзывы, FAQ и вызов мастера.",
+        type: "WebPage"
+      }),
+      itemListSchema(
+        "Основные услуги Remtehcom",
+        services.map((service) => ({ name: service.name, file: serviceFile(service) }))
+      )
+    ],
     body
   });
 }
@@ -1124,6 +1662,15 @@ ${contactCta("Обсудить ремонт техники с мастером R
       { name: "Главная", file: "index.html" },
       { name: "О компании", file: "about.html" }
     ],
+    schemas: [
+      pageSchema({
+        file: "about.html",
+        name: "О компании Remtehcom",
+        description: "Информация о сервисном центре Remtehcom в Туле: услуги, выезд мастера, адрес, контакты и открытые источники о компании.",
+        type: "AboutPage"
+      })
+    ],
+
     body
   });
 }
@@ -1156,6 +1703,19 @@ ${contactCta("Не нашли свою технику в списке?")}`;
       { name: "Главная", file: "index.html" },
       { name: "Все услуги", file: "services.html" }
     ],
+    schemas: [
+      pageSchema({
+        file: "services.html",
+        name: "Все услуги Remtehcom",
+        description: "Каталог услуг Remtehcom по ремонту бытовой техники в Туле и Тульской области.",
+        type: "CollectionPage"
+      }),
+      itemListSchema(
+        "Услуги Remtehcom",
+        services.map((service) => ({ name: service.name, file: serviceFile(service) }))
+      )
+    ],
+
     body
   });
 }
@@ -1270,14 +1830,17 @@ function renderArticles(page = 1) {
   const offset = (currentPage - 1) * ARTICLES_PER_PAGE;
   const pageArticles = articles.slice(offset, offset + ARTICLES_PER_PAGE);
   const file = articleListingPageFile(currentPage);
+  const prevFile = currentPage > 1 ? articleListingPageFile(currentPage - 1) : "";
+  const nextFile = currentPage < totalPages ? articleListingPageFile(currentPage + 1) : "";
   const body = `
 ${hero({
   h1: "Статьи о ремонте бытовой техники в Туле",
-  lead: "Полезный раздел Remtehcom: 102 SEO-статьи о ремонте холодильников, стиральных машин, посудомоек, телевизоров, кондиционеров и другой техники.",
+  lead: `Полезный раздел Remtehcom: ${articles.length} статей о ремонте холодильников, стиральных машин, посудомоек, телевизоров, кондиционеров и другой техники.`,
   kicker: "Полезные статьи",
   compact: true,
   imageAlt: "Статьи о ремонте бытовой техники в Туле"
 })}
+${currentPage === 1 ? articleClustersBlock() : ""}
 <section class="section">
   <div class="container">
 ${sectionHeader("Все статьи", "Материалы помогают понять симптомы неисправностей, ориентиры стоимости, диагностику и порядок вызова мастера в Туле.")}
@@ -1292,7 +1855,7 @@ ${contactCta("Нужна консультация по ремонту техни
     activeFile: "article.html",
     title: currentPage === 1 ? "Статьи о ремонте бытовой техники в Туле | Remtehcom" : `Статьи о ремонте бытовой техники в Туле - страница ${currentPage} | Remtehcom`,
     description: currentPage === 1
-      ? "102 полезные статьи Remtehcom о ремонте бытовой техники в Туле: холодильники, стиральные машины, телевизоры, кондиционеры, цены и диагностика."
+      ? `${articles.length} полезных статей Remtehcom о ремонте бытовой техники в Туле: холодильники, стиральные машины, телевизоры, кондиционеры, цены и диагностика.`
       : `Подборка статей Remtehcom о ремонте бытовой техники в Туле - страница ${currentPage}. Симптомы неисправностей, диагностика, цены и советы мастера.`,
     keywords: ["статьи ремонт бытовой техники Тула", "ремонт техники советы", "ремонт холодильников статьи", "ремонт стиральных машин статьи", "мастер по ремонту техники Тула"],
     breadcrumbs: [
@@ -1300,6 +1863,22 @@ ${contactCta("Нужна консультация по ремонту техни
       { name: "Статьи", file: "article.html" },
       ...(currentPage > 1 ? [{ name: `Страница ${currentPage}`, file }] : [])
     ],
+    schemas: [
+      pageSchema({
+        file,
+        name: currentPage === 1 ? "Статьи о ремонте бытовой техники в Туле" : `Статьи о ремонте бытовой техники в Туле — страница ${currentPage}` ,
+        description: currentPage === 1
+          ? "Подборка статей Remtehcom о симптомах неисправностей, диагностике, стоимости ремонта и вызове мастера в Туле."
+          : `Подборка статей Remtehcom о ремонте бытовой техники в Туле, страница ${currentPage}.`,
+        type: "CollectionPage"
+      }),
+      itemListSchema(
+        currentPage === 1 ? "Список статей Remtehcom" : `Список статей Remtehcom — страница ${currentPage}`,
+        pageArticles.map((article) => ({ name: article.h1, file: articleFile(article) }))
+      )
+    ],
+    prevFile,
+    nextFile,
     body
   });
 }
@@ -1348,6 +1927,7 @@ ${hero({
     </div>
   </div>
 </section>
+${!article.isGeneral ? serviceKnowledgeBlock(article.service) : articleClustersBlock()}
 ${contactCta(`Заказать ${article.service.name.toLowerCase()} в Туле`)}`;
 
   return layout({
@@ -1357,12 +1937,23 @@ ${contactCta(`Заказать ${article.service.name.toLowerCase()} в Туле
     description: article.description,
     keywords: article.keywords,
     image: article.image,
+    ogType: "article",
+    publishedTime: generatedAt,
+    modifiedTime: generatedAt,
     breadcrumbs: [
       { name: "Главная", file: "index.html" },
       { name: "Статьи", file: "article.html" },
       { name: article.h1, file: articleFile(article) }
     ],
-    schemas: [articleSchema(article)],
+    schemas: [
+      articleSchema(article),
+      pageSchema({
+        file: articleFile(article),
+        name: article.h1,
+        description: article.description,
+        type: "WebPage"
+      })
+    ],
     body
   });
 }
@@ -1373,7 +1964,7 @@ function renderService(service) {
 ${hero({
   h1: service.h1,
   lead: service.lead,
-  kicker: "Ремонт на дому в Туле",
+  kicker: "Сервисный центр в Туле",
   compact: true,
   image: service.image,
   imageAlt: `${service.name} в Туле`
@@ -1411,7 +2002,10 @@ ${hero({
 </section>
 ${benefitsBlock(`Преимущества услуги «${service.short}»`)}
 ${processBlock()}
-${serviceArticlesBlock(service)}
+${serviceKnowledgeBlock(service)}
+${serviceCommercialBlock(service)}
+${serviceCoverageBlock(service)}
+${serviceLinkHub(service)}
 ${faqBlock(service.faq, service.slug)}
 ${contactCta(`Заказать ${service.name.toLowerCase()} в Туле`)}`;
 
@@ -1428,7 +2022,15 @@ ${contactCta(`Заказать ${service.name.toLowerCase()} в Туле`)}`;
       { name: service.name, file: serviceFile(service) }
     ],
     faq: service.faq,
-    schemas: [serviceSchema(service)],
+    schemas: [
+      serviceSchema(service),
+      pageSchema({
+        file: serviceFile(service),
+        name: service.h1,
+        description: service.description,
+        type: "WebPage"
+      })
+    ],
     body
   });
 }
@@ -1472,6 +2074,19 @@ ${contactCta("Уточнить стоимость ремонта по вашей
       { name: "Главная", file: "index.html" },
       { name: "Цены", file: "prices.html" }
     ],
+    schemas: [
+      pageSchema({
+        file: "prices.html",
+        name: "Цены на ремонт бытовой техники в Туле",
+        description: "Ориентировочные цены Remtehcom на ремонт бытовой техники в Туле.",
+        type: "CollectionPage"
+      }),
+      itemListSchema(
+        "Прайс по услугам Remtehcom",
+        services.map((service) => ({ name: service.name, file: serviceFile(service) }))
+      )
+    ],
+
     body
   });
 }
@@ -1498,6 +2113,15 @@ ${contactCta("Оставить заявку на ремонт техники")}`
       { name: "Главная", file: "index.html" },
       { name: "Отзывы", file: "reviews.html" }
     ],
+    schemas: [
+      pageSchema({
+        file: "reviews.html",
+        name: "Отзывы о Remtehcom",
+        description: "Отзывы клиентов Remtehcom и рейтинги на картах и в каталогах.",
+        type: "CollectionPage"
+      })
+    ],
+
     body
   });
 }
@@ -1524,6 +2148,14 @@ ${contactCta("Остались вопросы по ремонту?")}`;
       { name: "FAQ", file: "faq.html" }
     ],
     faq: generalFaq,
+    schemas: [
+      pageSchema({
+        file: "faq.html",
+        name: "FAQ по ремонту бытовой техники в Туле",
+        description: "Ответы Remtehcom на вопросы о диагностике, выезде мастера, сроках, гарантии и стоимости ремонта.",
+        type: "FAQPage"
+      })
+    ],
     body
   });
 }
@@ -1547,6 +2179,14 @@ ${contactBlock()}`;
     breadcrumbs: [
       { name: "Главная", file: "index.html" },
       { name: "Контакты", file: "contact.html" }
+    ],
+    schemas: [
+      pageSchema({
+        file: "contact.html",
+        name: "Контакты Remtehcom в Туле",
+        description: "Контакты сервисного центра Remtehcom: адрес, телефоны, email, график работы и заявка на ремонт.",
+        type: "ContactPage"
+      })
     ],
     body
   });
@@ -1584,6 +2224,14 @@ ${hero({
     breadcrumbs: [
       { name: "Главная", file: "index.html" },
       { name: "Политика конфиденциальности", file: "privacy.html" }
+    ],
+    schemas: [
+      pageSchema({
+        file: "privacy.html",
+        name: "Политика конфиденциальности Remtehcom",
+        description: "Правила обработки персональных данных на сайте Remtehcom.",
+        type: "WebPage"
+      })
     ],
     body
   });
@@ -1666,7 +2314,7 @@ function sitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages
-  .map((file) => `  <url><loc>${loc(file)}</loc></url>`)
+  .map((file) => `  <url><loc>${loc(file)}</loc><lastmod>${generatedDate}</lastmod></url>`)
   .join("\n")}
 </urlset>
 `;
@@ -1726,6 +2374,7 @@ function legacyRedirect(file) {
 function build() {
   removePath("article");
   removePath("articles");
+  removePath("services");
   services.forEach((service) => {
     removePath(service.slug);
   });
@@ -1791,6 +2440,7 @@ function build() {
   writeRaw("sitemap.xml", sitemap());
   writeRaw("robots.txt", robots());
   writeRaw(".htaccess", htaccess());
+  writeRaw(".nojekyll", "\n");
 }
 
 build();

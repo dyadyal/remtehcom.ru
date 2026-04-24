@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: /remtehcom.ru/sitemap.xml
+Sitemap: https://dyadyal.github.io/remtehcom.ru/sitemap.xml
